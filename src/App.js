@@ -1,22 +1,21 @@
 import React from 'react';
 import './App.css';
 import Birthday from './Birthday';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import RouterBirthday from './RouterBirthday';
 import Generate from './Generate';
 
 function App() {
   return (
     <div className='App'>
-      <Switch>
-        <Route exact path='/' component={Birthday} />
+      <Routes>
+        <Route path='/' element={<Birthday />} />
         <Route
-          exact
           path='/birthday/:name?/:day?/:month?'
-          component={RouterBirthday}
+          element={<RouterBirthday />}
         />
-        <Route exact path='/generate' component={Generate} />
-      </Switch>
+        <Route path='/generate' element={<Generate />} />
+      </Routes>
     </div>
   );
 }
