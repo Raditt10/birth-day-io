@@ -1,4 +1,4 @@
-# 🎉 Birthday Wisher with Countdown! 🎉
+#  Birthday Wisher with Countdown! 
 
 **Deskripsi Singkat:**
 
