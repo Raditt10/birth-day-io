@@ -72,7 +72,7 @@ Ikuti langkah berikut untuk menjalankan project di komputer lokal:
 
 1. **Clone Repository**
 ```bash
-git clone [https://github.com/username/birth-day-io.git](https://github.com/username/birth-day-io.git)
+git clone [https://github.com/Raditt10/birth-day-io.git](https://github.com/Raditt10/birth-day-io.git)
 cd birth-day-io
 
 ```
