@@ -1,148 +1,290 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&family=JetBrains+Mono:wght@800&display=swap');
 
-/* VARIABLES */
+/* GLOBAL VARIABLES */
 :root {
-  --main-bg-color-dark: #212529;
-  --main-text-color-dark: #e8e8e8;
+  --ink-black: #000000;
+  --paper-white: #ffffff;
+  --space-dark: #0a0a0a; /* Lebih gelap dari sebelumnya */
+  --neon-accent: #ffffff; /* Aksen putih murni untuk kontras */
+  --shadow-hard: 6px 6px 0px;
 }
 
-* {
-  box-sizing: border-box;
+body {
   margin: 0;
   padding: 0;
+  background-color: var(--space-dark);
+  font-family: 'Comic Neue', cursive;
+  overflow-x: hidden;
+  color: #fff;
 }
-body {
-  font-family: 'Montserrat', sans-serif;
-  background-color: var(--main-bg-color-dark);
-  color: var(--main-text-color-dark);
-  background-color: #1d1d1d;
-}
-.page {
+
+/* Scrollbar Custom */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: #fff; border: 2px solid #000; }
+
+/* LAYOUT UTAMA */
+.split-layout {
+  display: flex;
+  min-height: 100vh;
   width: 100%;
-  height: 100vh;
+}
+
+.left-panel {
+  flex: 1;
+  padding: 4rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  text-align: center;
+  position: relative;
+  z-index: 10;
+  background: var(--space-dark);
 }
-.heading {
-  font-size: 45px;
+
+.right-panel {
+  flex: 1;
+  background: #000;
+  position: relative;
+  border-left: 4px solid #fff;
+  overflow: hidden;
 }
-.highlight {
-  color: #7f78d2;
+
+/* TYPOGRAPHY - COMIC STYLE */
+.comic-title {
+  font-family: 'Bangers', cursive;
+  font-size: 4.5rem;
+  line-height: 0.9;
+  color: #fff;
+  text-shadow: 4px 4px 0 #333;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
-.countdown-wrapper {
-  max-width: 800px;
+
+.outline-text {
+  color: var(--space-dark);
+  -webkit-text-stroke: 2px #fff;
+  text-shadow: none;
+}
+
+.comic-subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  color: #aaa;
+  font-size: 1rem;
+  margin-bottom: 3rem;
+  border-left: 4px solid #fff;
+  padding-left: 1rem;
+}
+
+/* FORM ELEMENTS (DESKTOP) */
+.comic-form {
+  max-width: 500px;
+  width: 100%;
+}
+
+.comic-label {
+  display: block;
+  font-family: 'Bangers', cursive;
+  font-size: 1.5rem;
+  color: #fff;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.comic-input {
+  width: 100%;
+  padding: 18px;
+  font-size: 1.2rem;
+  font-family: 'Comic Neue', cursive;
+  font-weight: 700;
+  border: 3px solid #fff;
+  background: #000;
+  color: #fff;
+  border-radius: 0; /* Kotak tajam profesional */
+  box-shadow: 5px 5px 0 #333;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.comic-input:focus {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 #fff;
+  background: #111;
+}
+
+.date-row {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  margin: 40px 0;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  margin-top: 1rem;
 }
+
+/* BUTTON LAUNCH */
+.comic-btn-launch {
+  width: 100%;
+  padding: 20px;
+  font-family: 'Bangers', cursive;
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+  color: #000;
+  background: #fff;
+  border: 3px solid #fff;
+  cursor: pointer;
+  transition: all 0.1s;
+  text-transform: uppercase;
+  box-shadow: 6px 6px 0 #333;
+  margin-top: 1rem;
+}
+
+.comic-btn-launch:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 10px 10px 0 #fff;
+  background: #000;
+  color: #fff;
+}
+
+/* CUSTOM DROPDOWN */
+.comic-month-select { position: relative; width: 100%; }
+.comic-month-button { 
+  display: flex; justify-content: space-between; align-items: center; cursor: pointer; 
+}
+.comic-month-dropdown {
+  position: absolute; top: 100%; left: 0; right: 0;
+  background: #000; border: 3px solid #fff; border-top: none;
+  max-height: 250px; overflow-y: auto; z-index: 100;
+}
+.comic-month-option {
+  padding: 12px; border-bottom: 1px solid #333; cursor: pointer;
+}
+.comic-month-option:hover { background: #fff; color: #000; }
+
+/* COUNTDOWN DISPLAY */
 .countdown-box {
-  background-color: #413c69;
-  font-size: 50px;
-  font-weight: 700;
-  color: #dcd6f7;
-  border-radius: 15px;
-  width: 160px;
-  height: 160px;
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  border: 3px solid #fff;
+  padding: 1.5rem;
   text-align: center;
+  background: #000;
+  box-shadow: 5px 5px 0 #333;
 }
-.legend {
-  font-size: 30px;
-  color: #a6b1e1;
+.count-val {
+  font-family: 'Bangers', cursive;
+  font-size: 4rem;
+  line-height: 1;
 }
-.wish-message {
-  font-size: 45px;
-  font-weight: 700;
+.count-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  margin-top: 5px;
 }
-.birthdate {
-  font-size: 25px;
-  font-weight: 600;
-  color: #7f78d2;
-}
-.credits {
-  margin-top: 15px;
-}
-.github-logo {
-  opacity: 0.5;
-  width: 50px;
-}
-.github-logo:hover {
-  opacity: 1;
-}
-.form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin-top: 20px;
-}
-.form input {
-  margin: 10px;
-}
-input {
-  color: var(--main-text-color-dark);
-  outline: none;
-  width: 300px;
-  height: 40px;
-  background-color: transparent;
-  border: 1px rgba(255, 255, 255, 0.2) solid;
-  border-radius: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
-  font-size: 18px;
-}
-select {
-  width: 300px;
-  height: 40px;
-  background-color: transparent;
-  color: rgba(255, 255, 255, 0.527);
-  font-family: Montserrat, sans-serif;
-  border: 1px rgba(255, 255, 255, 0.164) solid;
-  padding-left: 20px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  border-radius: 5px;
-  font-size: 18px;
-  margin-top: 10px;
-  outline: none;
-}
-input:focus,
-select:focus,
-.btn:focus {
-  border: 1px rgba(255, 255, 255, 1) solid;
-  transition: all 0.5s;
-}
-.btn {
-  width: 300px;
-  height: 40px;
-  margin-top: 20px;
-  outline: none;
-  border: 1px rgba(255, 255, 255, 0.2) solid;
-  background-color: transparent;
-  border-radius: 5px;
-  color: rgba(255, 255, 255, 0.719);
-  font-size: 18px;
-  font-weight: 700;
-}
-.btn:hover {
-  color: white;
-}
-a {
-  color: #7f78d2;
-  font-weight: bold;
-  margin-top: 20px;
-}
-.gen-link {
-  margin-top: 20px;
-  font-size: 400;
+
+/* ========================================= */
+/* MOBILE VIEW: PROFESSIONAL INK COMIC STYLE */
+/* ========================================= */
+@media (max-width: 768px) {
+  body {
+    background-color: #fff; /* Kertas Putih */
+    color: #000; /* Tinta Hitam */
+    background-image: radial-gradient(#ccc 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .split-layout { flex-direction: column; }
+  .right-panel { display: none; }
+
+  .left-panel {
+    padding: 1.5rem;
+    padding-top: 4rem;
+    background: transparent;
+    min-height: 100vh;
+  }
+
+  /* Header Dekorasi */
+  .mobile-header-decoration {
+    position: absolute; top: 0; left: 0; width: 100%; height: 20px;
+    background: repeating-linear-gradient(45deg, #000, #000 10px, #fff 10px, #fff 20px);
+    border-bottom: 4px solid #000;
+  }
+
+  .comic-title {
+    color: #000;
+    text-shadow: 4px 4px 0 #ccc;
+    font-size: 3.5rem;
+    text-align: center;
+  }
+  
+  .outline-text {
+    color: #fff;
+    -webkit-text-stroke: 2px #000;
+    text-shadow: 4px 4px 0 #000;
+  }
+
+  .comic-subtitle {
+    color: #000;
+    background: #fff;
+    border: 3px solid #000;
+    padding: 10px;
+    box-shadow: 4px 4px 0 #000;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  /* Form Mobile */
+  .comic-form {
+    background: #fff;
+    border: 4px solid #000;
+    padding: 1.5rem;
+    box-shadow: 8px 8px 0 #000;
+  }
+
+  .comic-label {
+    color: #000;
+    background: #fff;
+    border: 2px solid #000;
+    display: inline-block;
+    padding: 2px 8px;
+    box-shadow: 3px 3px 0 #000;
+    margin-bottom: 8px;
+    transform: rotate(-1deg);
+  }
+
+  .comic-input, .comic-month-button {
+    background: #fff;
+    color: #000;
+    border: 3px solid #000;
+    box-shadow: 4px 4px 0 #888;
+  }
+
+  .comic-input:focus {
+    box-shadow: 6px 6px 0 #000;
+    background: #fff;
+  }
+
+  .comic-month-dropdown {
+    background: #fff;
+    border-color: #000;
+  }
+  .comic-month-option { border-bottom-color: #eee; }
+  .comic-month-option:hover { background: #000; color: #fff; }
+
+  .comic-btn-launch {
+    background: #000;
+    color: #fff;
+    border: 3px solid #000;
+    box-shadow: 6px 6px 0 #888;
+  }
+  
+  .comic-btn-launch:active {
+    background: #333;
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 #000;
+  }
+
+  /* Countdown Mobile */
+  .countdown-box {
+    background: #fff;
+    color: #000;
+    border-color: #000;
+    box-shadow: 4px 4px 0 #000;
+  }
 }
