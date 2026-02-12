@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import MangaLayout from '../components/layout/Layout';
 import { motion, AnimatePresence } from 'framer-motion';
 import LoadingScreen from '../components/ui/LoadingScreen';
@@ -23,7 +23,6 @@ const Home = () => {
 
   const showToast = (msg) => {
     setToast({ show: true, message: msg });
-    // Clear toast after 3 seconds
     setTimeout(() => {
         setToast(prev => ({ ...prev, show: false }));
     }, 3000);
@@ -114,20 +113,21 @@ const Home = () => {
       initial="initial"
       animate="animate"
       exit="exit"
-      className="w-full min-h-screen bg-zinc-900"
+      className="w-full min-h-screen bg-zinc-900 overflow-x-hidden" // Added overflow-x-hidden
     >
       <MangaLayout 
         sidePanelContent={
-          <div className="text-white text-center rotate-[-5deg] px-4 w-full relative z-20">
+          <div className="text-white text-center rotate-[-5deg] px-4 w-full relative z-20 mt-8 md:mt-0">
             <motion.div 
                initial={{ scale: 0.8, opacity: 0 }} 
                animate={{ scale: 1, opacity: 1, rotate: [0, -2, 2, 0] }}
                transition={{ duration: 0.8, delay: 0.5 }}
             >
-              <h1 className="font-['Bangers'] text-6xl md:text-9xl drop-shadow-[6px_6px_0_#000] leading-none mb-2 break-words text-white stroke-black">
+              {/* Responsive Text Size for Mobile Title */}
+              <h1 className="font-['Bangers'] text-6xl sm:text-7xl md:text-9xl drop-shadow-[6px_6px_0_#000] leading-none mb-2 break-words text-white stroke-black">
                 BIRTHDAY<br/>MAKER
               </h1>
-              <p className="font-mono bg-yellow-400 text-black font-bold text-xs md:text-lg inline-block px-4 py-1 transform skew-x-[-10deg] border-2 border-black shadow-[4px_4px_0_#000]">
+              <p className="font-mono bg-yellow-400 text-black font-bold text-[10px] sm:text-xs md:text-lg inline-block px-4 py-1 transform skew-x-[-10deg] border-2 border-black shadow-[4px_4px_0_#000]">
                 v0.1.0 // INITIALIZE SEQUENCE
               </p>
             </motion.div>
@@ -138,14 +138,14 @@ const Home = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="w-full max-w-lg mx-auto relative px-2"
+        className="w-full max-w-lg mx-auto relative px-3 sm:px-2 pb-20" // Adjusted padding
       >
         {/* Background Decor */}
-        <div className="absolute top-0 right-0 -z-10 opacity-20 pointer-events-none">
-           <div className="font-['Bangers'] text-9xl text-gray-200 leading-none">01</div>
+        <div className="absolute top-0 right-0 -z-10 opacity-20 pointer-events-none select-none">
+           <div className="font-['Bangers'] text-8xl md:text-9xl text-gray-200 leading-none">01</div>
         </div>
         
-        {/* Manga Grid Texture (Kotak-kotak) */}
+        {/* Manga Grid Texture */}
         <div className="absolute inset-0 -z-20 opacity-[0.08] pointer-events-none" 
              style={{ 
                backgroundImage: `linear-gradient(#000 1.5px, transparent 1.5px), linear-gradient(90deg, #000 1.5px, transparent 1.5px)`, 
@@ -153,17 +153,16 @@ const Home = () => {
              }}
         />
 
-        {/* Dynamic Action Lines */}
-        <div className="absolute top-20 left-[-10%] w-[120%] h-[3px] bg-black/10 -rotate-2 pointer-events-none -z-10" />
-        <div className="absolute bottom-40 left-[-10%] w-[120%] h-[2px] bg-black/10 rotate-3 pointer-events-none -z-10" />
-        <div className="absolute top-[-10%] right-20 w-[2px] h-[120%] bg-black/10 -rotate-6 pointer-events-none -z-10" />
+        {/* Dynamic Action Lines (Hidden on tiny screens to reduce clutter) */}
+        <div className="hidden sm:block absolute top-20 left-[-10%] w-[120%] h-[3px] bg-black/10 -rotate-2 pointer-events-none -z-10" />
+        <div className="hidden sm:block absolute bottom-40 left-[-10%] w-[120%] h-[2px] bg-black/10 rotate-3 pointer-events-none -z-10" />
 
-        <motion.div variants={itemVariants} className="mb-10 border-l-[12px] border-black pl-6 relative">
-           <span className="absolute -top-6 -left-3 text-[10px] font-mono font-bold bg-black text-white px-2 py-0.5">Make Your Own Version.</span>
+        <motion.div variants={itemVariants} className="mb-8 md:mb-10 border-l-[8px] md:border-l-[12px] border-black pl-4 md:pl-6 relative mt-4">
+           <span className="absolute -top-6 -left-2 text-[10px] font-mono font-bold bg-black text-white px-2 py-0.5">Make Your Own Version.</span>
            <h2 className="font-['Bangers'] text-5xl md:text-8xl mb-2 leading-[0.85] text-black drop-shadow-[2px_2px_0_rgba(0,0,0,0.1)]">
              FILL OUT<br/>THE FORM
            </h2>
-           <p className="font-mono text-xs md:text-sm bg-black text-white inline-block px-3 py-1 transform -skew-x-12 shadow-[4px_4px_0_rgba(0,0,0,0.2)]">
+           <p className="font-mono text-[10px] md:text-xs bg-black text-white inline-block px-3 py-1 transform -skew-x-12 shadow-[3px_3px_0_rgba(0,0,0,0.2)]">
              // Congratulate your lover Fiction Character! //
            </p>
         </motion.div>
@@ -175,31 +174,28 @@ const Home = () => {
               <input 
                 type="text" 
                 placeholder="Ex: Abdul Hussain"
-                className="w-full bg-gray-50 border-4 border-black p-4 font-bold text-lg md:text-2xl focus:shadow-[8px_8px_0px_#000] focus:bg-white focus:-translate-y-1 focus:-translate-x-1 focus:outline-none transition-all placeholder:text-gray-300 rounded-none"
+                className="w-full bg-gray-50 border-4 border-black p-3 md:p-4 font-bold text-lg md:text-2xl focus:shadow-[6px_6px_0px_#000] focus:bg-white focus:-translate-y-1 focus:-translate-x-1 focus:outline-none transition-all placeholder:text-gray-300 rounded-none appearance-none"
                 onChange={e => setFormData({...formData, name: e.target.value})}
-                // deleted required
               />
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 font-mono text-xs text-gray-300 pointer-events-none">[REQ]</div>
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 font-mono text-[10px] md:text-xs text-gray-300 pointer-events-none">[REQ]</div>
             </div>
           </motion.div>
 
-          <motion.div variants={itemVariants} className="grid grid-cols-2 gap-6">
+          <motion.div variants={itemVariants} className="grid grid-cols-2 gap-4 md:gap-6">
             <div className="group">
               <label className="block font-['Bangers'] text-xl md:text-2xl mb-1 ml-1">DAY (DD)</label>
               <input 
-                type="number" min="1" max="31" placeholder="DD"
-                className="w-full bg-gray-50 border-4 border-black p-4 font-bold text-center text-xl md:text-2xl focus:shadow-[6px_6px_0px_#000] focus:bg-white focus:-translate-y-1 focus:outline-none transition-all rounded-none"
+                type="number" min="1" max="31" placeholder="DD" inputMode="numeric"
+                className="w-full bg-gray-50 border-4 border-black p-3 md:p-4 font-bold text-center text-xl md:text-2xl focus:shadow-[4px_4px_0px_#000] focus:bg-white focus:-translate-y-1 focus:outline-none transition-all rounded-none appearance-none"
                 onChange={e => setFormData({...formData, day: e.target.value})}
-                // deleted required
               />
             </div>
             <div className="group">
               <label className="block font-['Bangers'] text-xl md:text-2xl mb-1 ml-1">MONTH (MM)</label>
               <input 
-                type="number" min="1" max="12" placeholder="MM"
-                className="w-full bg-gray-50 border-4 border-black p-4 font-bold text-center text-xl md:text-2xl focus:shadow-[6px_6px_0px_#000] focus:bg-white focus:-translate-y-1 focus:outline-none transition-all rounded-none"
+                type="number" min="1" max="12" placeholder="MM" inputMode="numeric"
+                className="w-full bg-gray-50 border-4 border-black p-3 md:p-4 font-bold text-center text-xl md:text-2xl focus:shadow-[4px_4px_0px_#000] focus:bg-white focus:-translate-y-1 focus:outline-none transition-all rounded-none appearance-none"
                 onChange={e => setFormData({...formData, month: e.target.value})}
-                // deleted required
               />
             </div>
           </motion.div>
@@ -220,44 +216,35 @@ const Home = () => {
                     exit={{ opacity: 0, height: 0 }}
                     className="mb-2 pl-1"
                 >
-                    <span className="bg-yellow-400 text-black border-2 border-black text-[10px] sm:text-xs font-mono font-bold px-2 py-1 inline-block shadow-[2px_2px_0_#000]">
-                        {'>>'} SYSTEM MATCH: MAYBE THIS IS WHO YOU MEANT?
+                    <span className="bg-yellow-400 text-black border-2 border-black text-[10px] font-mono font-bold px-2 py-1 inline-block shadow-[2px_2px_0_#000]">
+                        {'>>'} SYSTEM MATCH FOUND
                     </span>
-                </motion.div>
-            )}
-            {searchQuery && filteredCharacters.length === 0 && (
-                <motion.div 
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    className="mb-2 pl-1 font-mono text-xs text-red-600 font-black animate-pulse bg-black/10 p-1"
-                >
-                    {'>>'} ERROR: 404 AGENT NOT FOUND
                 </motion.div>
             )}
             </AnimatePresence>
 
-            <div className="grid grid-cols-3 gap-2 md:gap-4">
+            {/* MOBILE FRIENDLY GRID: 2 Columns on Mobile, 3 on Tablet/Desktop */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4 mt-2">
               {filteredCharacters.map((char) => (
                 <div 
                   key={char.id}
                   onClick={() => setFormData({...formData, character: char.id})}
                   className={`
                     cursor-pointer border-4 p-2 relative overflow-hidden transition-all group/char
-                    ${formData.character === char.id ? 'border-black bg-black text-white transform -translate-y-1 shadow-[4px_4px_0_#000]' : 'border-gray-200 bg-gray-50 text-gray-400 hover:border-black hover:text-black'}
+                    ${formData.character === char.id ? 'border-black bg-black text-white transform -translate-y-1 shadow-[4px_4px_0_#000]' : 'border-gray-200 bg-gray-50 text-gray-400 active:border-zinc-400 sm:hover:border-black sm:hover:text-black'}
                   `}
                 >
-                  {/* Image or Color Block */}
                   {char.img ? (
                     <div 
-                      className="w-full h-12 md:h-16 mb-2 bg-cover bg-center grayscale group-hover/char:grayscale-0 transition-all"
+                      className="w-full h-14 md:h-16 mb-2 bg-cover bg-center grayscale group-hover/char:grayscale-0 transition-all"
                       style={{ backgroundImage: `url('${char.img}')` }}
                     />
                   ) : (
-                    <div className={`w-full h-12 md:h-16 mb-2 ${char.color} opacity-80 group-hover/char:opacity-100 transition-opacity`} />
+                    <div className={`w-full h-14 md:h-16 mb-2 ${char.color} opacity-80 group-hover/char:opacity-100 transition-opacity`} />
                   )}
                   
-                  <div className="font-['Bangers'] text-lg md:text-xl leading-none">{char.name}</div>
-                  <div className="font-mono text-[8px] md:text-[10px] uppercase">{char.desc}</div>
+                  <div className="font-['Bangers'] text-lg md:text-xl leading-none truncate pr-4">{char.name}</div>
+                  <div className="font-mono text-[9px] md:text-[10px] uppercase truncate">{char.desc}</div>
                   
                   {formData.character === char.id && (
                     <div className="absolute top-1 right-1 text-yellow-400 text-xs font-bold">★</div>
@@ -266,16 +253,13 @@ const Home = () => {
               ))}
             </div>
 
-            {/* Show All / Reset Filter Section */}
-            <div className="mt-4 flex justify-center relative z-50">
+            <div className="mt-4 flex justify-center relative z-10">
                 <button
                    type="button"
                    onClick={handleDisplayAll}
-                   className="text-xs md:text-sm font-mono font-bold text-zinc-500 hover:text-white hover:bg-black border-2 border-zinc-200 hover:border-black flex items-center gap-3 transition-all px-6 py-2 uppercase tracking-widest shadow-sm hover:shadow-[4px_4px_0_#000] hover:-translate-y-1 cursor-pointer"
+                   className="w-full sm:w-auto text-[10px] sm:text-sm font-mono font-bold text-zinc-500 hover:text-white hover:bg-black border-2 border-zinc-200 hover:border-black flex items-center justify-center gap-2 transition-all px-4 py-3 sm:py-2 uppercase tracking-widest shadow-sm active:scale-95 sm:hover:shadow-[4px_4px_0_#000] sm:hover:-translate-y-1 cursor-pointer"
                 >
-                   <span>+</span>
-                   <span>VIEW ALL PERSONNEL</span>
-                   <span>+</span>
+                   <span>+ VIEW ALL PERSONNEL +</span>
                 </button>
             </div>
           </motion.div>
@@ -285,10 +269,10 @@ const Home = () => {
             whileHover={{ scale: 1.02, backgroundColor: "#000", color: "#fff" }}
             whileTap={{ scale: 0.95 }}
             type="submit" 
-            className="w-full bg-black text-white font-['Bangers'] text-xl sm:text-2xl md:text-4xl py-4 md:py-5 border-4 border-black hover:bg-red-600 hover:border-black shadow-[6px_6px_0_#999] hover:shadow-[8px_8px_0_#000] transition-all relative overflow-hidden group whitespace-normal h-auto"
+            className="w-full bg-black text-white font-['Bangers'] text-2xl md:text-4xl py-4 md:py-5 border-4 border-black hover:bg-red-600 hover:border-black shadow-[6px_6px_0_#999] hover:shadow-[8px_8px_0_#000] active:shadow-[2px_2px_0_#000] active:translate-y-1 transition-all relative overflow-hidden group whitespace-normal h-auto"
           >
             <span className="relative z-10 flex flex-wrap items-center justify-center gap-2 leading-none text-center">
-              <span>INITIATE LAUNCH SEQUENCE</span> 
+              <span>INITIATE LAUNCH</span> 
               <span className="text-sm">{'>>'}</span>
             </span>
             <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 transform skew-y-12"></div>
@@ -303,16 +287,15 @@ const Home = () => {
             {isLoading && <LoadingScreen text={loadingText} />}
         </AnimatePresence>
 
-        {/* Custom Toast Notification */}
         <CustomToast 
             isVisible={toast.show} 
             message={toast.message} 
             onClose={() => setToast({...toast, show: false})} 
         />
       </motion.div>
-     </MangaLayout>
-     
-     <Footer />
+      </MangaLayout>
+      
+      <Footer />
     </motion.div>
   );
 };
