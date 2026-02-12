@@ -1,17 +1,19 @@
 import React from 'react';
-import './App.css';
-import { Route, Routes } from 'react-router-dom';
-import HomeInput from './HomeInput';
-import CountdownDisplay from './CountdownDisplay';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
+import Home from './pages/Home';
+import CountdownMission from './pages/CountdownMission';
 
 function App() {
+  const location = useLocation();
+
   return (
-    <div className='App'>
-      <Routes>
-        <Route path='/' element={<HomeInput />} />
-        <Route path='/countdown/:name/:day/:month' element={<CountdownDisplay />} />
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<Home />} />
+        <Route path="/mission/:name/:day/:month" element={<CountdownMission />} />
       </Routes>
-    </div>
+    </AnimatePresence>
   );
 }
 

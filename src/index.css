@@ -1,74 +1,40 @@
-/* 1. Import Font Google (Bangers & Comic Neue) */
-@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@300;400;700&display=swap');
+/* RESET & VARIABLES */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* 2. Reset CSS Dasar */
+:root {
+  --ink-black: #111111; /* Hitam pekat, tapi tidak absolut mati */
+  --paper-white: #fbfbfb; /* Putih kertas sedikit tekstur */
+  --paper-gray: #e0e0e0;
+  --shadow-hard: 8px 8px 0px var(--ink-black);
+  --shadow-soft: 4px 4px 0px rgba(0,0,0,0.2);
+  --border-thick: 4px solid var(--ink-black);
+  --border-thin: 2px solid var(--ink-black);
+  
+  /* Texture Pattern (Halftone Dots) */
+  --halftone-pattern: radial-gradient(circle, var(--ink-black) 1px, transparent 1px);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* 3. Style Utama Body */
 body {
-  margin: 0;
-  font-family: 'Comic Neue', cursive, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  
-  /* Default Background (Desktop: Dark Space) */
-  background-color: #0a0e27; 
-  color: white;
-  
-  overflow-x: hidden; /* Mencegah scroll ke samping */
-  width: 100%;
-  min-height: 100vh;
+  font-family: 'Comic Neue', cursive;
+  background-color: var(--paper-white);
+  color: var(--ink-black);
+  overflow-x: hidden;
+  /* Background tekstur kertas komik */
+  background-image: 
+    linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-/* 4. Kustomisasi Scrollbar Keren (Tema Cyber) */
-/* Hanya untuk Chrome, Edge, dan Safari */
-::-webkit-scrollbar {
-  width: 12px;
-}
-
-::-webkit-scrollbar-track {
-  background: #0a0e27; /* Warna track gelap */
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #00d4ff; /* Warna Cyan Neon */
-  border-radius: 6px;
-  border: 3px solid #0a0e27; /* Memberi jarak antara thumb dan track */
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: #ffbe0b; /* Berubah jadi Kuning saat di-hover */
-}
-
-/* 5. Penyesuaian Mobile (Tema Komik Hitam Putih) */
-@media (max-width: 768px) {
-  body {
-    /* Ubah background dasar jadi Putih di HP */
-    background-color: #ffffff;
-    color: black;
-  }
-
-  /* Scrollbar lebih tipis & hitam di HP */
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: #ffffff;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: #000000;
-    border: none;
-    border-radius: 3px;
-  }
-}
+/* Scrollbar Manga Style */
+::-webkit-scrollbar { width: 12px; }
+::-webkit-scrollbar-track { background: var(--paper-white); border-left: var(--border-thick); }
+::-webkit-scrollbar-thumb { background: var(--ink-black); border: 2px solid var(--paper-white); }

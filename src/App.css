@@ -1,290 +1,439 @@
-@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&family=JetBrains+Mono:wght@800&display=swap');
-
-/* GLOBAL VARIABLES */
+/* ======================== */
+/* RESPONSIVE & UTILITIES   */
+/* ======================== */
 :root {
-  --ink-black: #000000;
-  --paper-white: #ffffff;
-  --space-dark: #0a0a0a; /* Lebih gelap dari sebelumnya */
-  --neon-accent: #ffffff; /* Aksen putih murni untuk kontras */
-  --shadow-hard: 6px 6px 0px;
+  --font-title: 'Bangers', cursive;
+  --font-body: 'Comic Neue', cursive;
+  --font-mono: 'JetBrains Mono', monospace;
+  --ink-black: #000;
+  --paper-white: #fff;
+  --primary-gold: #FFD93D;
+  --border-thick: 4px solid var(--ink-black);
+  --shadow-hard: 6px 6px 0px var(--ink-black);
+  --spacing-base: 1rem;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--space-dark);
-  font-family: 'Comic Neue', cursive;
-  overflow-x: hidden;
-  color: #fff;
+/* Fluid Typography */
+.text-responsive-xl {
+  font-family: var(--font-title);
+  font-size: clamp(2.5rem, 5vw + 1rem, 5rem);
+  line-height: 1.1;
 }
 
-/* Scrollbar Custom */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: #000; }
-::-webkit-scrollbar-thumb { background: #fff; border: 2px solid #000; }
+.text-responsive-lg {
+  font-family: var(--font-title);
+  font-size: clamp(1.8rem, 4vw + 1rem, 3.5rem);
+}
 
-/* LAYOUT UTAMA */
-.split-layout {
-  display: flex;
+.text-responsive-md {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 2vw + 0.5rem, 1.25rem);
+}
+
+/* Responsive Containers */
+.page-container {
   min-height: 100vh;
-  width: 100%;
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
 }
 
-.left-panel {
-  flex: 1;
-  padding: 4rem;
+.content-wrapper {
+  padding: 1rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.responsive-header {
+  background-color: #000;
+  color: #fff;
+  padding: clamp(1.5rem, 4vw, 3rem) 1rem;
+  text-align: center;
+  border-bottom: 4px solid var(--primary-gold);
+}
+
+/* Grid Layouts */
+.responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: clamp(1rem, 3vw, 2rem);
+  padding: 1rem;
+}
+
+@media (max-width: 600px) {
+  .responsive-grid {
+    grid-template-columns: 1fr; /* Stack cards on mobile */
+  }
+}
+
+/* ======================== */
+/* MAIN LAYOUT STRUCTURE    */
+/* ======================== */
+.manga-container {
+  display: flex;
+  min-height: calc(100vh - 64px); /* Account for nav height */
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* PANEL KIRI: Control Center (Lebih kecil, padat) */
+.left-control-panel {
+  flex: 0 0 400px; /* Fixed width di desktop */
+  background: var(--paper-white);
+  border-right: var(--border-thick);
+  padding: clamp(2rem, 5vw, 3rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
   position: relative;
   z-index: 10;
-  background: var(--space-dark);
+  box-shadow: var(--shadow-hard);
+  box-sizing: border-box;
 }
 
-.right-panel {
+/* PANEL KANAN: The Anime Splash Page (Flexible width) */
+.right-stage-panel {
   flex: 1;
-  background: #000;
   position: relative;
-  border-left: 4px solid #fff;
+  overflow: hidden;
+  background-color: #333; /* Fallback color */
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(100%) contrast(120%); /* Memastikan gambar jadi B&W dramatis */
+  min-height: 400px;
+}
+
+/* Overlay Gelap di Panel Kanan agar teks terbaca */
+.stage-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent 50%),
+              linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
+  z-index: 1;
+}
+
+/* Content di atas background anime */
+.stage-content {
+  position: relative;
+  z-index: 5;
+  height: 100%;
+  width: 100%;
+  padding: clamp(1.5rem, 5vw, 3rem);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Konten ditaruh di bawah */
+  align-items: flex-start;
+  color: var(--paper-white);
+}
+
+/* ======================== */
+/* COMIC UI COMPONENTS      */
+/* ======================== */
+
+/* Judul Besar Berbayang */
+.comic-title-xl {
+  font-family: 'Bangers', cursive;
+  font-size: clamp(3rem, 8vw, 5rem); /* Fluid font size */
+  line-height: 0.9;
+  text-transform: uppercase;
+  color: var(--ink-black);
+  text-shadow: 4px 4px 0 #fff, 6px 6px 0 var(--ink-black);
+  margin-bottom: 1.5rem;
+  transform: rotate(-2deg);
+}
+
+/* Label Data (JetBrains Mono) */
+.data-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: var(--ink-black);
+  color: var(--paper-white);
+  padding: 4px 8px;
+  display: inline-block;
+  margin-bottom: 8px;
+  transform: skewX(-10deg);
+}
+
+/* Input Field Bergaya Kasar */
+.comic-input-field {
+  width: 100%;
+  padding: 14px;
+  font-family: 'Comic Neue', cursive;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: var(--border-thick);
+  background: #fff;
+  outline: none;
+  transition: all 0.1s;
+  box-sizing: border-box;
+}
+.comic-input-field:focus {
+  box-shadow: var(--shadow-hard);
+  transform: translate(-2px, -2px) rotate(0.5deg);
+}
+/* State Error */
+.comic-input-field.error {
+  border-color: var(--ink-black);
+  background-image: repeating-linear-gradient(45deg, #fff, #fff 10px, #eee 10px, #eee 20px);
+  animation: shake 0.3s ease-in-out;
+}
+
+/* Tombol Aksi */
+.comic-btn-action {
+  width: 100%;
+  padding: 20px;
+  background: var(--ink-black);
+  color: var(--paper-white);
+  font-family: 'Bangers', cursive;
+  font-size: clamp(1.2rem, 4vw, 1.8rem);
+  letter-spacing: 2px;
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-hard);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.1s;
+}
+.comic-btn-action:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 10px 10px 0 var(--ink-black);
+}
+.comic-btn-action:active {
+  transform: translate(4px, 4px);
+  box-shadow: 2px 2px 0 var(--ink-black);
+}
+
+/* ======================== */
+/* RESPONSIVE MOBILE        */
+/* ======================== */
+@media (max-width: 900px) {
+  .manga-container {
+    flex-direction: column;
+    height: auto;
+    overflow-y: auto;
+  }
+  .left-control-panel {
+    flex: none;
+    width: 100%;
+    padding: 2rem 1.5rem;
+    border-right: none;
+    border-bottom: var(--border-thick);
+  }
+  .right-stage-panel {
+    min-height: 50vh; /* Make stage smaller on mobile to not take full scroll */
+  }
+}
+
+@media (max-width: 480px) {
+  .comic-title-xl {
+    font-size: 2.5rem; 
+  }
+  .left-control-panel {
+    padding: 1.5rem 1rem;
+  }
+  .stage-content {
+    padding: 1.5rem 1rem;
+  }
+}
+
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+/* ======================== */
+/* RESPONSIVE IMPROVEMENTS  */
+/* ======================== */
+
+/* Better form styling */
+.comic-form {
+  position: relative;
+  z-index: 5;
+}
+
+/* Data label styling */
+.data-label {
+  display: inline-block;
+  background: var(--ink-black);
+  color: var(--paper-white);
+  padding: 4px 12px;
+  font-family: 'JetBrains Mono';
+  font-weight: bold;
+  border-radius: 3px;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+/* Button action styling */
+.comic-btn-action {
+  padding: 12px 24px;
+  background: var(--ink-black);
+  color: var(--paper-white);
+  border: 2px solid var(--ink-black);
+  border-radius: 4px;
+  font-family: 'Bangers', cursive;
+  font-size: 1.1rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.comic-btn-action:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.3);
+}
+
+.comic-btn-action:active {
+  transform: translate(0, 0);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* SFX Text */
+.sfx-text {
+  font-family: 'Bangers', cursive;
+  font-weight: bold;
+  position: absolute;
+  z-index: 8;
+  color: rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  text-shadow: 1px 1px 0 #fff;
+}
+
+/* Comic panel base styling */
+.comic-panel {
+  background: var(--paper-white);
+  border: 3px solid var(--ink-black);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 6px 6px 0px var(--ink-black);
+  position: relative;
   overflow: hidden;
 }
 
-/* TYPOGRAPHY - COMIC STYLE */
-.comic-title {
+/* Panel Title styling */
+.comic-panel-title {
+  position: absolute;
+  top: -15px;
+  left: 25px;
+  background: var(--ink-black);
+  color: var(--paper-white);
+  padding: 5px 15px;
+  border-radius: 4px;
   font-family: 'Bangers', cursive;
-  font-size: 4.5rem;
-  line-height: 0.9;
-  color: #fff;
-  text-shadow: 4px 4px 0 #333;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+  font-size: 0.9rem;
+  font-weight: bold;
 }
 
-.outline-text {
-  color: var(--space-dark);
-  -webkit-text-stroke: 2px #fff;
-  text-shadow: none;
-}
-
-.comic-subtitle {
-  font-family: 'JetBrains Mono', monospace;
-  color: #aaa;
-  font-size: 1rem;
-  margin-bottom: 3rem;
-  border-left: 4px solid #fff;
-  padding-left: 1rem;
-}
-
-/* FORM ELEMENTS (DESKTOP) */
-.comic-form {
-  max-width: 500px;
-  width: 100%;
-}
-
-.comic-label {
-  display: block;
-  font-family: 'Bangers', cursive;
-  font-size: 1.5rem;
-  color: #fff;
-  letter-spacing: 1px;
-  margin-bottom: 0.5rem;
-  text-transform: uppercase;
-}
-
-.comic-input {
-  width: 100%;
-  padding: 18px;
-  font-size: 1.2rem;
+/* Speech bubble styling */
+.speech-bubble {
+  background: var(--paper-white);
+  border: 2px solid var(--ink-black);
+  border-radius: 15px;
+  padding: 12px 16px;
+  position: relative;
   font-family: 'Comic Neue', cursive;
-  font-weight: 700;
-  border: 3px solid #fff;
-  background: #000;
+  margin-top: 10px;
+}
+
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  left: 15px;
+  bottom: -8px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 0px solid transparent;
+  border-top: 10px solid var(--ink-black);
+}
+
+.speech-bubble::before {
+  content: '';
+  position: absolute;
+  left: 17px;
+  bottom: -5px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 0px solid transparent;
+  border-top: 8px solid var(--paper-white);
+}
+
+/* Countdown input error styling */
+.comic-input-field.error {
+  border-color: #E74C3C !important;
+  background-color: #FFE5E5 !important;
+}
+
+.error-message {
+  color: #E74C3C;
+  font-family: 'Comic Neue', cursive;
+  font-weight: bold;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+/* Loading state */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.loading {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Success indicator */
+.success-badge {
+  display: inline-block;
+  background: #6BCB77;
   color: #fff;
-  border-radius: 0; /* Kotak tajam profesional */
-  box-shadow: 5px 5px 0 #333;
-  outline: none;
-  transition: all 0.2s;
-}
-
-.comic-input:focus {
-  transform: translate(-2px, -2px);
-  box-shadow: 8px 8px 0 #fff;
-  background: #111;
-}
-
-.date-row {
-  display: flex;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-  margin-top: 1rem;
-}
-
-/* BUTTON LAUNCH */
-.comic-btn-launch {
-  width: 100%;
-  padding: 20px;
+  padding: 8px 16px;
+  border-radius: 20px;
   font-family: 'Bangers', cursive;
-  font-size: 1.8rem;
-  letter-spacing: 2px;
-  color: #000;
-  background: #fff;
-  border: 3px solid #fff;
-  cursor: pointer;
-  transition: all 0.1s;
-  text-transform: uppercase;
-  box-shadow: 6px 6px 0 #333;
-  margin-top: 1rem;
+  font-weight: bold;
+  font-size: 0.9rem;
 }
 
-.comic-btn-launch:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: 10px 10px 0 #fff;
-  background: #000;
-  color: #fff;
-}
-
-/* CUSTOM DROPDOWN */
-.comic-month-select { position: relative; width: 100%; }
-.comic-month-button { 
-  display: flex; justify-content: space-between; align-items: center; cursor: pointer; 
-}
-.comic-month-dropdown {
-  position: absolute; top: 100%; left: 0; right: 0;
-  background: #000; border: 3px solid #fff; border-top: none;
-  max-height: 250px; overflow-y: auto; z-index: 100;
-}
-.comic-month-option {
-  padding: 12px; border-bottom: 1px solid #333; cursor: pointer;
-}
-.comic-month-option:hover { background: #fff; color: #000; }
-
-/* COUNTDOWN DISPLAY */
-.countdown-box {
-  border: 3px solid #fff;
-  padding: 1.5rem;
-  text-align: center;
-  background: #000;
-  box-shadow: 5px 5px 0 #333;
-}
-.count-val {
-  font-family: 'Bangers', cursive;
-  font-size: 4rem;
-  line-height: 1;
-}
-.count-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.8rem;
-  margin-top: 5px;
-}
-
-/* ========================================= */
-/* MOBILE VIEW: PROFESSIONAL INK COMIC STYLE */
-/* ========================================= */
-@media (max-width: 768px) {
-  body {
-    background-color: #fff; /* Kertas Putih */
-    color: #000; /* Tinta Hitam */
-    background-image: radial-gradient(#ccc 1px, transparent 1px);
-    background-size: 20px 20px;
+/* Animations for page transitions */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-
-  .split-layout { flex-direction: column; }
-  .right-panel { display: none; }
-
-  .left-panel {
-    padding: 1.5rem;
-    padding-top: 4rem;
-    background: transparent;
-    min-height: 100vh;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
+}
 
-  /* Header Dekorasi */
-  .mobile-header-decoration {
-    position: absolute; top: 0; left: 0; width: 100%; height: 20px;
-    background: repeating-linear-gradient(45deg, #000, #000 10px, #fff 10px, #fff 20px);
-    border-bottom: 4px solid #000;
-  }
+.slide-in-up {
+  animation: slideInUp 0.3s ease-out;
+}
 
-  .comic-title {
-    color: #000;
-    text-shadow: 4px 4px 0 #ccc;
-    font-size: 3.5rem;
-    text-align: center;
+/* Print styles */
+@media print {
+  .noprint {
+    display: none !important;
   }
   
-  .outline-text {
-    color: #fff;
-    -webkit-text-stroke: 2px #000;
-    text-shadow: 4px 4px 0 #000;
-  }
-
-  .comic-subtitle {
-    color: #000;
-    background: #fff;
-    border: 3px solid #000;
-    padding: 10px;
-    box-shadow: 4px 4px 0 #000;
-    text-align: center;
-    font-weight: bold;
-  }
-
-  /* Form Mobile */
-  .comic-form {
-    background: #fff;
-    border: 4px solid #000;
-    padding: 1.5rem;
-    box-shadow: 8px 8px 0 #000;
-  }
-
-  .comic-label {
-    color: #000;
-    background: #fff;
-    border: 2px solid #000;
-    display: inline-block;
-    padding: 2px 8px;
-    box-shadow: 3px 3px 0 #000;
-    margin-bottom: 8px;
-    transform: rotate(-1deg);
-  }
-
-  .comic-input, .comic-month-button {
-    background: #fff;
-    color: #000;
-    border: 3px solid #000;
-    box-shadow: 4px 4px 0 #888;
-  }
-
-  .comic-input:focus {
-    box-shadow: 6px 6px 0 #000;
-    background: #fff;
-  }
-
-  .comic-month-dropdown {
-    background: #fff;
-    border-color: #000;
-  }
-  .comic-month-option { border-bottom-color: #eee; }
-  .comic-month-option:hover { background: #000; color: #fff; }
-
-  .comic-btn-launch {
-    background: #000;
-    color: #fff;
-    border: 3px solid #000;
-    box-shadow: 6px 6px 0 #888;
-  }
-  
-  .comic-btn-launch:active {
-    background: #333;
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0 #000;
-  }
-
-  /* Countdown Mobile */
-  .countdown-box {
-    background: #fff;
-    color: #000;
-    border-color: #000;
-    box-shadow: 4px 4px 0 #000;
+  .comic-btn-launch,
+  .comic-btn-action {
+    box-shadow: none !important;
   }
 }
