@@ -148,10 +148,11 @@ const Home = () => {
             whileHover={{ scale: 1.02, backgroundColor: "#000", color: "#fff" }}
             whileTap={{ scale: 0.95 }}
             type="submit" 
-            className="w-full bg-black text-white font-['Bangers'] text-2xl md:text-4xl py-4 md:py-5 border-4 border-black hover:bg-red-600 hover:border-black shadow-[6px_6px_0_#999] hover:shadow-[8px_8px_0_#000] transition-all relative overflow-hidden group"
+            className="w-full bg-black text-white font-['Bangers'] text-xl sm:text-2xl md:text-4xl py-4 md:py-5 border-4 border-black hover:bg-red-600 hover:border-black shadow-[6px_6px_0_#999] hover:shadow-[8px_8px_0_#000] transition-all relative overflow-hidden group whitespace-normal h-auto"
           >
-            <span className="relative z-10 flex items-center justify-center gap-2">
-              INITIATE LAUNCH SEQUENCE <span className="text-sm"></span>
+            <span className="relative z-10 flex flex-wrap items-center justify-center gap-2 leading-none text-center">
+              <span>INITIATE LAUNCH SEQUENCE</span> 
+              <span className="text-sm">{'>>'}</span>
             </span>
             <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 transform skew-y-12"></div>
           </motion.button>
