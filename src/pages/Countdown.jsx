@@ -395,11 +395,11 @@ const CountdownMission = () => {
                         Agent Report // {activeChar.name}
                     </div>
                     <div className="flex flex-col md:flex-row gap-4 mb-4">
-                        <div className="flex-shrink-0 bg-transparent">
+                        <div className="flex-shrink-0">
                             <img 
                                 src={`/chibi/chibi_${character}.webp`}
                                 alt={character}
-                                className="h-20 w-20 md:h-24 md:w-24 object-contain bg-transparent"
+                                className="h-20 w-20 md:h-24 md:w-24 object-contain"
                             />
                         </div>
                         <p className="font-serif italic font-bold text-2xl md:text-3xl text-gray-800 leading-tight flex-1">
