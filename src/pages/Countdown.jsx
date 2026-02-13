@@ -60,6 +60,171 @@ const ShareModal = ({ url, onClose }) => {
   );
 };
 
+// --- GIFT BOX COMPONENT ---
+const GiftBox = ({ character, name, onOpen, isLocked = true }) => {
+  const [isOpening, setIsOpening] = useState(false);
+
+  const handleOpen = () => {
+    if (isLocked) return; // Can't open if locked
+    setIsOpening(true);
+    setTimeout(() => {
+      onOpen();
+    }, 800);
+  };
+
+  return (
+    <motion.div 
+      className="flex flex-col items-center justify-center gap-8"
+      initial={{ scale: 0.8, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 0.6 }}
+    >
+      {/* TITLE */}
+      <div className="text-center">
+        <h1 className="font-['Bangers'] text-4xl md:text-6xl text-white mb-2 leading-none">SPECIAL DELIVERY!</h1>
+        <p className="font-mono text-lg md:text-2xl font-bold text-yellow-400 tracking-tighter">FOR: {name}</p>
+      </div>
+
+      {/* GIFT BOX */}
+      <motion.div
+        onClick={handleOpen}
+        className={isLocked ? "cursor-not-allowed opacity-80" : "cursor-pointer"}
+        animate={isOpening ? { rotateX: 180, opacity: 0 } : { y: [0, -10, 0] }}
+        transition={isOpening ? { duration: 0.8 } : { duration: 2, repeat: Infinity }}
+      >
+        <div className="relative w-32 h-32 md:w-48 md:h-48">
+          {/* BOX BODY */}
+          <div className={`absolute inset-0 border-4 border-black shadow-[8px_8px_0_rgba(0,0,0,0.6)] ${
+            isLocked 
+              ? 'bg-gradient-to-br from-gray-500 to-gray-700' 
+              : 'bg-gradient-to-br from-red-500 to-red-700'
+          }`} />
+          
+          {/* RIBBON - VERTICAL */}
+          <div className={`absolute left-1/2 top-0 bottom-0 w-8 border-2 border-black/30 -translate-x-1/2 ${
+            isLocked ? 'bg-gray-400' : 'bg-yellow-300'
+          }`} />
+          
+          {/* RIBBON - HORIZONTAL */}
+          <div className={`absolute top-1/2 left-0 right-0 h-8 border-2 border-black/30 -translate-y-1/2 ${
+            isLocked ? 'bg-gray-400' : 'bg-yellow-300'
+          }`} />
+          
+          {/* BOW OR LOCK */}
+          {isLocked ? (
+            // PADLOCK ICON
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 md:w-16 md:h-16">
+              {/* Lock body */}
+              <div className="absolute left-1/2 top-1/3 -translate-x-1/2 w-8 h-8 md:w-10 md:h-10 bg-yellow-600 border-3 border-black rounded-b-md -translate-y-1/4" />
+              {/* Lock shackle */}
+              <div className="absolute left-1/2 top-0 -translate-x-1/2 w-6 h-6 md:w-8 md:h-8 border-3 border-black rounded-full bg-transparent" />
+              {/* Keyhole */}
+              <div className="absolute left-1/2 top-2/5 -translate-x-1/2 w-2 h-2 bg-black rounded-full" />
+            </div>
+          ) : (
+            // BOW
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 md:w-16 md:h-16">
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full">
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-6 h-6 md:w-8 md:h-8 bg-yellow-400 rounded-full border-2 border-black" />
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-6 h-6 md:w-8 md:h-8 bg-yellow-400 rounded-full border-2 border-black" />
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 md:w-4 md:h-4 bg-yellow-500 rounded-full border border-black" />
+              </div>
+            </div>
+          )}
+        </div>
+      </motion.div>
+
+      {/* CLICK HINT */}
+      <motion.div
+        animate={{ scale: [1, 1.1, 1] }}
+        transition={{ duration: 1.5, repeat: Infinity }}
+        className="text-center"
+      >
+        {isLocked ? (
+          <>
+            <p className="font-['Bangers'] text-2xl md:text-4xl text-red-400 mb-1">LOCKED</p>
+            <p className="font-mono text-sm text-red-300">🔒 Will unlock on birthday!</p>
+          </>
+        ) : (
+          <>
+            <p className="font-['Bangers'] text-2xl md:text-4xl text-white mb-1">TAP TO OPEN</p>
+            <p className="font-mono text-sm text-yellow-300">Click the gift box!</p>
+          </>
+        )}
+      </motion.div>
+    </motion.div>
+  );
+};
+
+// --- VOICE NOTE COMPONENT ---
+const VoiceNotePlayer = ({ characterName, name }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = React.useRef(null);
+
+  const voiceFiles = {
+    gojo: '/voices/gojo_birthday.mp3',
+    leon: '/voices/leon_birthday.mp3',
+    levi: '/voices/levi_birthday.mp3',
+    eren_jaeger: '/voices/eren_jaeger_birthday.mp3'
+    // Add more as voice files become available
+  };
+
+  const handlePlay = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  return (
+    <motion.div
+      initial={{ scale: 0.9, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      className="text-center"
+    >
+      <div className="mb-6">
+        <h1 className="font-['Bangers'] text-5xl md:text-7xl text-yellow-300 mb-2 animate-pulse">🎉</h1>
+        <h1 className="font-['Bangers'] text-4xl md:text-6xl text-white mb-3">BIRTHDAY GIFT!</h1>
+        <p className="font-mono text-lg text-gray-300 mb-8"><span className="text-yellow-300">{characterName}</span> left a message for {name}:</p>
+      </div>
+
+      {/* PLAYER BOX */}
+      <div className="bg-black/80 border-4 border-white p-6 md:p-8 max-w-md mx-auto backdrop-blur-sm">
+        <div className="mb-6 flex justify-center">
+          <motion.button
+            onClick={handlePlay}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            className="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-yellow-400 to-yellow-500 border-4 border-black rounded-full flex items-center justify-center shadow-[6px_6px_0_rgba(0,0,0,0.8)] hover:from-yellow-300 hover:to-yellow-400"
+          >
+            <span className="text-4xl md:text-5xl">
+              {isPlaying ? '⏸' : '▶'}
+            </span>
+          </motion.button>
+        </div>
+
+        <audio 
+          ref={audioRef} 
+          onEnded={() => setIsPlaying(false)}
+          src={voiceFiles[characterName]}
+        />
+
+        <p className="font-mono text-xs text-yellow-300 uppercase tracking-wider">
+          {isPlaying ? '🔊 Playing...' : '⏺️ Ready to play'}
+        </p>
+      </div>
+
+      <p className="font-mono text-[10px] text-gray-500 mt-6 uppercase">
+        Voice message from your chosen agent
+      </p>
+    </motion.div>
+  );
+};
+
 // --- OPTIMIZED PLACEHOLDER COMPONENTS ---
 const PlaceholderWish = ({ name }) => (
   <motion.div 
@@ -88,6 +253,7 @@ const CountdownMission = () => {
   const [timeLeft, setTimeLeft] = useState(null);
   const [isBirthday, setIsBirthday] = useState(false);
   const [bgPhase, setBgPhase] = useState('calm');
+  const [giftOpened, setGiftOpened] = useState(false);
 
   // Character Config
   const CHARACTER_CONFIG = {
@@ -205,18 +371,25 @@ const CountdownMission = () => {
             
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent z-10" />
 
-            <div className="relative z-20 p-4 md:p-12 w-full mt-auto mb-8 md:my-auto">
-            {isBirthday ? (
-                <PlaceholderWish name={name} />
+            <div className="relative z-20 p-4 md:p-12 w-full mt-auto mb-8 md:my-auto flex flex-col items-center gap-8">
+            {isBirthday && giftOpened ? (
+                <VoiceNotePlayer characterName={character} name={name} />
+            ) : isBirthday && !giftOpened ? (
+                <GiftBox character={character} name={name} onOpen={() => setGiftOpened(true)} isLocked={false} />
             ) : (
-                <div className="w-full max-w-4xl mx-auto">
+                <>
+                  <div className="scale-75 md:scale-100">
+                    <GiftBox character={character} name={name} onOpen={() => {}} isLocked={true} />
+                  </div>
+                  <div className="w-full max-w-4xl">
                     <div className="grid grid-cols-4 gap-2 md:gap-4 px-2">
                         <MangaTimeBox val={timeLeft.totalDays} label="DAYS" urgent={timeLeft.totalDays < 7} />
                         <MangaTimeBox val={timeLeft.hours} label="HRS" />
                         <MangaTimeBox val={timeLeft.minutes} label="MIN" />
                         <MangaTimeBox val={timeLeft.seconds} label="SEC" urgent={true} />
                     </div>
-                </div>
+                  </div>
+                </>
             )}
             </div>
         </motion.div>

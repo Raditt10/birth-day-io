@@ -6,6 +6,7 @@ import LoadingScreen from '../components/ui/LoadingScreen';
 import SearchBar from '../components/ui/SearchBar';
 import Footer from '../components/ui/Footer';
 import CustomToast from '../components/ui/Warning';
+import DatePicker from '../components/ui/DatePicker';
 import { CHARACTERS } from '../data/characters';
 
 const Home = () => {
@@ -174,30 +175,20 @@ const Home = () => {
               <input 
                 type="text" 
                 placeholder="Ex: Abdul Hussain"
-                className="w-full bg-gray-50 border-4 border-black p-3 md:p-4 font-bold text-lg md:text-2xl focus:shadow-[6px_6px_0px_#000] focus:bg-white focus:-translate-y-1 focus:-translate-x-1 focus:outline-none transition-all placeholder:text-gray-300 rounded-none appearance-none"
+                className="w-full bg-white border-3 border-black p-3 md:p-4 font-bold text-lg md:text-2xl focus:border-black focus:shadow-[6px_6px_0px_rgba(0,0,0,0.8)] focus:outline-none transition-all placeholder:text-gray-400 rounded-lg appearance-none shadow-[4px_4px_0px_rgba(0,0,0,0.6)] active:-translate-y-1 active:-translate-x-1 active:shadow-[2px_2px_0px_rgba(0,0,0,0.6)]"
                 onChange={e => setFormData({...formData, name: e.target.value})}
               />
               <div className="absolute right-4 top-1/2 -translate-y-1/2 font-mono text-[10px] md:text-xs text-gray-300 pointer-events-none">[REQ]</div>
             </div>
           </motion.div>
 
-          <motion.div variants={itemVariants} className="grid grid-cols-2 gap-4 md:gap-6">
-            <div className="group">
-              <label className="block font-['Bangers'] text-xl md:text-2xl mb-1 ml-1">DAY (DD)</label>
-              <input 
-                type="number" min="1" max="31" placeholder="DD" inputMode="numeric"
-                className="w-full bg-gray-50 border-4 border-black p-3 md:p-4 font-bold text-center text-xl md:text-2xl focus:shadow-[4px_4px_0px_#000] focus:bg-white focus:-translate-y-1 focus:outline-none transition-all rounded-none appearance-none"
-                onChange={e => setFormData({...formData, day: e.target.value})}
-              />
-            </div>
-            <div className="group">
-              <label className="block font-['Bangers'] text-xl md:text-2xl mb-1 ml-1">MONTH (MM)</label>
-              <input 
-                type="number" min="1" max="12" placeholder="MM" inputMode="numeric"
-                className="w-full bg-gray-50 border-4 border-black p-3 md:p-4 font-bold text-center text-xl md:text-2xl focus:shadow-[4px_4px_0px_#000] focus:bg-white focus:-translate-y-1 focus:outline-none transition-all rounded-none appearance-none"
-                onChange={e => setFormData({...formData, month: e.target.value})}
-              />
-            </div>
+          <motion.div variants={itemVariants} className="group">
+            <label className="block font-['Bangers'] text-xl md:text-2xl mb-1 ml-1">BIRTHDAY DATE</label>
+            <DatePicker 
+              day={parseInt(formData.day) || ''}
+              month={parseInt(formData.month) || ''}
+              onDateChange={(dateObj) => setFormData({...formData, day: dateObj.day, month: dateObj.month})}
+            />
           </motion.div>
 
           <motion.div variants={itemVariants} className="group">

@@ -22,5 +22,13 @@ export const CHARACTERS = [
       img: '/avatar/levi_ackermen.webp',
       stats: { power: 95, speed: 99, technique: 98 },
       universe: 'ATTACK ON TITAN' 
+    },
+    { 
+      id: 'eren_jaeger', 
+      name: 'EREN JAEGER', 
+      desc: 'Colossal Titan', 
+      img: '/avatar/Eren_jaeger.webp',
+      stats: { power: 99, speed: 85, technique: 90 },
+      universe: 'ATTACK ON TITAN' 
     }
   ];

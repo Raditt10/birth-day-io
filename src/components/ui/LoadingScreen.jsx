@@ -107,11 +107,11 @@ const LoadingScreen = ({ text = "GENERATE..." }) => {
                 {/* The Character/Video */}
                 <canvas 
                     ref={canvasRef}
-                    className={`w-full h-full object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] transition-opacity duration-700 ${isVideoLoaded ? 'opacity-100' : 'opacity-0'}`}
+                    className={`w-full h-full object-contain transition-opacity duration-700 ${isVideoLoaded ? 'opacity-100' : 'opacity-0'}`}
                 />
                 
                 {/* Scanline Effect (Garis berjalan turun) */}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/10 to-transparent h-[20%] w-full animate-scan pointer-events-none" />
+                <div className="absolute inset-0 h-[20%] w-full animate-scan pointer-events-none" />
             </div>
 
             {/* TEXT & LOADING BAR */}

@@ -21,6 +21,22 @@ const MangaLayout = ({ children, sidePanelContent }) => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/80 opacity-60" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/20 to-black opacity-80" />
 
+        {/* COMIC PANEL LINES */}
+        {/* Vertical Lines */}
+        <div className="absolute inset-0 opacity-20 pointer-events-none" 
+             style={{
+               backgroundImage: `linear-gradient(90deg, white 1px, transparent 1px)`,
+               backgroundSize: '60px 100%'
+             }}
+        />
+        {/* Horizontal Lines */}
+        <div className="absolute inset-0 opacity-15 pointer-events-none" 
+             style={{
+               backgroundImage: `linear-gradient(0deg, white 1px, transparent 1px)`,
+               backgroundSize: '100% 60px'
+             }}
+        />
+
         {/* Content */}
         <div className="relative z-10 h-full w-full flex items-center justify-center p-8">
            {sidePanelContent}
