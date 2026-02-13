@@ -1,12 +1,33 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { QRCodeSVG } from 'qrcode.react';
 import Footer from '../components/ui/Footer';
 import LoadingScreen from '../components/ui/LoadingScreen';
+import BackButton from '../components/ui/BackButton';
 
-// --- SHARE MODAL COMPONENT (Re-styled) ---
-const ShareModal = ({ url, onClose }) => {
+// --- PERSONA 5 CONSTANTS ---
+const P5_YELLOW = "#fbbf24";
+const P5_WHITE = "#ffffff";
+
+// --- UTILS: JAGGED EDGE SVG ---
+const JaggedEdge = ({ className }) => (
+  <div className={`overflow-hidden w-full h-4 ${className}`}>
+    <svg viewBox="0 0 100 10" preserveAspectRatio="none" className="w-full h-full">
+      <polygon points="0,0 5,10 10,0 15,10 20,0 25,10 30,0 35,10 40,0 45,10 50,0 55,10 60,0 65,10 70,0 75,10 80,0 85,10 90,0 95,10 100,0 100,10 0,10" fill="currentColor" />
+    </svg>
+  </div>
+);
+
+// --- P5 STAR ICON ---
+const P5Star = ({ className }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z" />
+  </svg>
+);
+
+// --- CALLING CARD (SHARE MODAL) ---
+const CallingCardModal = ({ url, onClose }) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -18,51 +39,65 @@ const ShareModal = ({ url, onClose }) => {
   return (
     <motion.div 
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md"
+        className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-white/80 backdrop-blur-sm"
       onClick={onClose}
     >
       <motion.div 
-        initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }}
-        className="bg-white border-4 border-black p-6 w-full max-w-sm shadow-[12px_12px_0_#fff]"
+        initial={{ rotate: -10, scale: 0.5, y: 100 }} 
+        animate={{ rotate: -2, scale: 1, y: 0 }}
+        exit={{ rotate: 10, scale: 0.5, y: 100 }}
+        className="relative max-w-md w-full"
         onClick={e => e.stopPropagation()}
       >
-        <div className="flex justify-between items-start mb-6 border-b-4 border-black pb-4">
-          <div>
-            <h2 className="font-['Bangers'] text-4xl leading-none">TOP SECRET</h2>
-            <p className="font-mono text-xs font-bold bg-black text-white inline-block px-1">CLASSIFIED DATA</p>
-          </div>
-          <button onClick={onClose} className="font-mono font-bold text-xl hover:text-red-600 border-2 border-transparent hover:border-black px-2 transition-all">X</button>
-        </div>
+        {/* Card Body */}
+        <div className="bg-yellow-300 p-1 shadow-[20px_20px_0_rgba(0,0,0,0.8)] transform skew-x-[-5deg]">
+          <div className="bg-white border-4 border-black p-6 flex flex-col items-center relative overflow-hidden">
+            
+            {/* Background Texture */}
+            <div className="absolute inset-0 opacity-20" 
+                 style={{backgroundImage: 'radial-gradient(black 1px, transparent 1px)', backgroundSize: '10px 10px'}}>
+            </div>
 
-        <div className="flex flex-col items-center gap-6">
-          <div className="p-3 border-4 border-black bg-white shadow-[6px_6px_0_#000]">
-             <QRCodeSVG value={url} size={160} />
-          </div>
-          
-          <div className="w-full">
-            <p className="font-mono text-[10px] font-bold mb-1 uppercase text-gray-500 tracking-widest">Mission Access Link:</p>
-            <div className="flex gap-0">
+            {/* Calling Card Header */}
+            <div className="bg-yellow-300 text-black font-['Bangers'] text-4xl px-4 py-1 -rotate-2 border-2 border-black absolute -top-4 -left-4 shadow-[4px_4px_0_#000]">
+              TAKE YOUR HEART
+            </div>
+
+            <h2 className="text-black font-mono font-bold mt-6 mb-4 text-center tracking-widest uppercase">
+              SECRET INVITATION LINK
+            </h2>
+
+            <div className="bg-black p-2 transform rotate-1 border-4 border-yellow-300 mb-6">
+              <QRCodeSVG value={url} size={150} fgColor={P5_WHITE} bgColor="#000000" />
+            </div>
+
+            <div className="w-full flex gap-2">
               <input 
                 readOnly 
                 value={url} 
-                className="flex-1 border-4 border-r-0 border-black px-3 py-2 font-mono text-xs bg-gray-100 text-gray-600 outline-none"
+                className="flex-1 bg-gray-100 border-2 border-black text-yellow-500 font-mono text-xs px-2 py-2 outline-none"
               />
               <button 
                 onClick={handleCopy}
-                className={`border-4 border-black px-4 font-black font-mono text-sm transition-all ${copied ? 'bg-black text-white' : 'bg-yellow-400 hover:bg-yellow-300'}`}
+                className={`px-4 font-black font-sans uppercase border-2 border-black transition-all ${copied ? 'bg-black text-yellow-300' : 'bg-yellow-300 text-black hover:bg-yellow-400'}`}
               >
-                {copied ? 'COPIED' : 'COPY'}
+                {copied ? 'STOLEN!' : 'STEAL'}
               </button>
             </div>
           </div>
         </div>
+        
+        {/* Close Button X */}
+        <button onClick={onClose} className="absolute -top-10 -right-5 text-black font-['Bangers'] text-5xl drop-shadow-[4px_4px_0_#fbbf24] hover:scale-110 transition-transform">
+          X
+        </button>
       </motion.div>
     </motion.div>
   );
 };
 
-// --- GIFT BOX COMPONENT (Enhanced) ---
-const GiftBox = ({ character, name, onOpen, isLocked = true }) => {
+// --- P5 GIFT BOX ---
+const PhantomGiftBox = ({ character, name, onOpen, isLocked = true }) => {
   const [isOpening, setIsOpening] = useState(false);
 
   const handleOpen = () => {
@@ -75,81 +110,69 @@ const GiftBox = ({ character, name, onOpen, isLocked = true }) => {
 
   return (
     <motion.div 
-      className="flex flex-col items-center justify-center w-full max-w-md mx-auto"
+      className="relative group"
       initial={{ scale: 0.8, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.5 }}
     >
-      {/* HEADER TEXT */}
-      <div className="text-center mb-8 relative">
-        <h1 className="relative font-['Bangers'] text-5xl md:text-7xl text-white leading-none drop-shadow-[4px_4px_0_#000]">
-          SPECIAL DROP
-        </h1>
-        <div className="relative inline-block bg-yellow-400 border-2 border-black px-4 py-1 transform -rotate-2 mt-2 shadow-[4px_4px_0_#000]">
-           <p className="font-mono text-xs md:text-sm font-bold text-black tracking-widest uppercase">Target: {name}</p>
+      {/* Target Notification */}
+      <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-64 text-center z-10">
+        <div className="bg-white text-black px-2 py-1 transform -skew-x-12 border-2 border-yellow-300 shadow-[4px_4px_0_#fbbf24]">
+          <p className="font-['Bangers'] text-xl tracking-wider transform skew-x-12">TARGET: {name}</p>
         </div>
       </div>
 
-      {/* GIFT BOX */}
       <motion.div
         onClick={handleOpen}
-        className={`relative ${isLocked ? "cursor-not-allowed opacity-90 grayscale-[0.5]" : "cursor-pointer"}`}
-        animate={isOpening ? { rotateX: 180, opacity: 0, scale: 1.5 } : { y: [0, -15, 0] }}
-        transition={isOpening ? { duration: 0.8 } : { duration: 3, repeat: Infinity, ease: "easeInOut" }}
-        whileHover={!isLocked ? { scale: 1.05, rotate: 2 } : {}}
-        whileTap={!isLocked ? { scale: 0.95 } : {}}
+        className={`relative w-48 h-48 md:w-64 md:h-64 flex items-center justify-center ${isLocked ? "cursor-not-allowed grayscale" : "cursor-pointer"}`}
+        animate={isOpening ? { rotate: [0, -10, 10, -10, 0], scale: 1.2, opacity: 0 } : { y: [0, -10, 0] }}
+        transition={isOpening ? { duration: 0.5 } : { duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        whileHover={!isLocked ? { scale: 1.05, rotate: -2 } : {}}
       >
-        <div className="relative w-40 h-40 md:w-56 md:h-56">
-          {/* BOX BODY */}
-          <div className={`absolute inset-0 border-[6px] border-black shadow-[12px_12px_0_rgba(0,0,0,0.5)] ${
-            isLocked ? 'bg-zinc-600' : 'bg-red-600'
-          }`} />
+        {/* The Box - Stylized as a Treasure Chest */}
+        <div className={`w-full h-full bg-white border-4 border-black relative shadow-[10px_10px_0_#fbbf24] transform rotate-3`}>
+          {/* Pattern */}
+          <div className="absolute inset-0 opacity-30" style={{backgroundImage: 'repeating-linear-gradient(135deg, #ddd, #ddd 10px, transparent 10px, transparent 20px)'}} />
           
-          {/* PATTERN ON BOX */}
-          <div className="absolute inset-0 opacity-20" 
-               style={{ backgroundImage: 'radial-gradient(#000 2px, transparent 2px)', backgroundSize: '10px 10px' }}>
+          {/* Cross Tape */}
+          <div className="absolute inset-0 flex items-center justify-center">
+             <div className="w-full h-8 bg-yellow-300 border-y-2 border-black absolute transform -rotate-3"></div>
+             <div className="h-full w-8 bg-yellow-300 border-x-2 border-black absolute transform -rotate-3"></div>
           </div>
 
-          {/* RIBBONS */}
-          <div className={`absolute left-1/2 top-0 bottom-0 w-10 border-x-[3px] border-black/20 -translate-x-1/2 ${
-            isLocked ? 'bg-zinc-400' : 'bg-yellow-400'
-          }`} />
-          <div className={`absolute top-1/2 left-0 right-0 h-10 border-y-[3px] border-black/20 -translate-y-1/2 ${
-            isLocked ? 'bg-zinc-400' : 'bg-yellow-400'
-          }`} />
-          
-          {/* INTERACTIVE INDICATOR */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+          {/* Center Icon */}
+          <div className="absolute inset-0 flex items-center justify-center z-20">
              {isLocked ? (
-                <div className="bg-black text-white p-2 border-2 border-white rounded-lg shadow-lg">
-                    <span className="text-3xl">🔒</span>
+                <div className="bg-black p-3 border-2 border-white transform rotate-45 shadow-[4px_4px_0_#fbbf24]">
+                   <div className="transform -rotate-45 font-black text-white text-2xl">🔒</div>
                 </div>
              ) : (
-                <div className="w-16 h-16 bg-yellow-400 rounded-full border-4 border-black flex items-center justify-center shadow-lg animate-bounce">
-                    <span className="font-['Bangers'] text-black text-xl">OPEN</span>
+                <div className="bg-black text-yellow-300 px-4 py-2 font-['Bangers'] text-2xl border-2 border-white transform -rotate-6 animate-pulse shadow-[5px_5px_0_#fbbf24]">
+                   OPEN ME!
                 </div>
              )}
           </div>
         </div>
       </motion.div>
 
-      {/* FOOTER HINT */}
-      <div className="mt-10 text-center">
-        {isLocked ? (
-           <div className="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 border-2 border-black">
-              <span className="animate-pulse">●</span>
-              <span className="font-mono text-xs font-bold uppercase">Unlock scheduled for birthday</span>
-           </div>
-        ) : (
-           <p className="font-mono text-sm text-yellow-300 bg-black/50 px-2">Tap box to retrieve contents</p>
-        )}
+      <div className="mt-8 text-center">
+         {isLocked ? (
+             <div className="bg-white inline-block px-4 py-1 transform -skew-x-12 border border-black">
+                 <span className="text-yellow-500 font-mono font-bold text-xs uppercase tracking-widest transform skew-x-12 block">
+                     Security Level: MAX
+                 </span>
+             </div>
+         ) : (
+             <div className="bg-yellow-300 text-black inline-block px-4 py-1 font-['Bangers'] text-xl tracking-widest border-2 border-black shadow-[4px_4px_0_#000]">
+                 TREASURE SECURED
+             </div>
+         )}
       </div>
     </motion.div>
   );
 };
 
-// --- VOICE NOTE COMPONENT (Tactical Style) ---
-const VoiceNotePlayer = ({ characterName, name }) => {
+// --- P5 VOICE PLAYER ---
+const PhantomAudio = ({ characterName, name }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
 
@@ -172,117 +195,109 @@ const VoiceNotePlayer = ({ characterName, name }) => {
   };
 
   return (
-    <motion.div
-      initial={{ scale: 0.9, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      className="w-full max-w-lg mx-auto p-4"
-    >
-      <div className="bg-white border-4 border-black p-1 shadow-[10px_10px_0_rgba(0,0,0,0.5)]">
-        <div className="border-2 border-black border-dashed p-6 bg-yellow-50 flex flex-col items-center gap-6 relative overflow-hidden">
-            
-            {/* Background Decor */}
-            <div className="absolute top-0 right-0 font-['Bangers'] text-9xl text-yellow-200 opacity-50 -rotate-12 select-none pointer-events-none">
-                AUDIO
+    <motion.div initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="w-full max-w-lg mx-auto p-4">
+      <div className="bg-white p-1 transform -rotate-1 shadow-[10px_10px_0_#fbbf24]">
+        <div className="border-2 border-black p-6 bg-gray-100 relative overflow-hidden">
+            {/* Visualizer Lines Background */}
+            <div className="absolute inset-0 flex justify-between opacity-20 pointer-events-none">
+                {[...Array(20)].map((_, i) => (
+                    <div key={i} className={`w-1 bg-yellow-300 h-full transform skew-x-12`} />
+                ))}
             </div>
 
-            <div className="text-center z-10">
-                <h2 className="font-black font-mono text-xl uppercase border-b-4 border-yellow-400 inline-block mb-2">Incoming Transmission</h2>
-                <p className="font-mono text-sm text-gray-600">Sender: <span className="font-bold text-black uppercase">{characterName}</span></p>
+            <div className="relative z-10 flex flex-col items-center">
+                <h3 className="text-black font-['Bangers'] text-3xl mb-4 text-shadow-yellow tracking-wide">
+                    CONFIDENTIAL AUDIO
+                </h3>
+                
+                <motion.button
+                    onClick={handlePlay}
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    whileTap={{ scale: 0.9 }}
+                    className={`w-20 h-20 flex items-center justify-center border-4 border-black transition-all ${isPlaying ? 'bg-yellow-300' : 'bg-white'} shadow-[4px_4px_0_#000]`}
+                >
+                    {isPlaying ? (
+                        <div className="flex gap-2">
+                           <div className="w-2 h-8 bg-black" />
+                           <div className="w-2 h-8 bg-black" />
+                        </div>
+                    ) : (
+                         <div className="w-0 h-0 border-t-[15px] border-t-transparent border-l-[30px] border-l-black border-b-[15px] border-b-transparent ml-2" />
+                    )}
+                </motion.button>
+                
+                <div className="mt-4 w-full bg-gray-300 h-2 skew-x-[-20deg] border border-gray-400">
+                    <motion.div 
+                        className="h-full bg-yellow-300"
+                        animate={{ width: isPlaying ? "100%" : "0%" }}
+                        transition={{ duration: 10, ease: "linear" }} // Mock duration
+                    />
+                </div>
+                
+                <p className="mt-2 text-yellow-600 font-mono text-xs font-bold bg-white px-2">
+                    SENDER: {characterName.toUpperCase()}
+                </p>
+                <audio ref={audioRef} onEnded={() => setIsPlaying(false)} src={voiceFiles[characterName]} />
             </div>
-
-            <motion.button
-                onClick={handlePlay}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={`w-24 h-24 rounded-full border-4 border-black flex items-center justify-center transition-colors z-10 ${
-                    isPlaying ? 'bg-red-500 text-white' : 'bg-yellow-400 text-black'
-                }`}
-            >
-                <span className="text-4xl ml-1">{isPlaying ? '⏸' : '▶'}</span>
-            </motion.button>
-
-            <audio 
-                ref={audioRef} 
-                onEnded={() => setIsPlaying(false)}
-                src={voiceFiles[characterName]}
-            />
-
-            <div className="w-full bg-black h-4 rounded-full overflow-hidden border-2 border-black z-10 relative">
-                 {/* Fake visualizer bar */}
-                <div className={`h-full bg-yellow-400 transition-all duration-1000 ${isPlaying ? 'w-full animate-pulse' : 'w-0'}`} />
-            </div>
-            
-            <p className="font-mono text-[10px] font-bold text-gray-400 uppercase tracking-widest z-10">
-                {isPlaying ? 'DECRYPTING AUDIO_FILE_01...' : 'WAITING FOR INPUT...'}
-            </p>
         </div>
       </div>
     </motion.div>
   );
 };
 
-// --- MANGA TIME BOX ---
-const MangaTimeBox = ({ val, label, urgent }) => (
-    <div className="flex flex-col gap-1 w-full group">
+// --- P5 CLOCK COMPONENT ---
+const PersonaClock = ({ val, label, urgent }) => (
+    <div className={`relative group transform ${urgent ? 'scale-110' : ''}`}>
         <div className={`
-            relative flex items-center justify-center aspect-square md:aspect-[4/3]
-            border-4 border-black transition-transform group-hover:-translate-y-1
-            ${urgent ? 'bg-red-600 text-white' : 'bg-white text-black'}
-            shadow-[4px_4px_0_rgba(0,0,0,1)]
-        `}>
-            {urgent && (
-                <div className="absolute top-1 right-1 w-2 h-2 md:w-3 md:h-3 bg-yellow-400 border border-black rounded-full animate-ping" />
-            )}
-            <span className="font-['Bangers'] text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-none mt-1">
-            {val < 10 ? `0${val}` : val}
+            bg-white text-black border-4 border-black
+            p-2 sm:p-4 min-w-[80px] sm:min-w-[100px]
+            flex flex-col items-center justify-center
+            shadow-[8px_8px_0_#fbbf24]
+            transition-transform duration-300
+            hover:-translate-y-2 hover:shadow-[12px_12px_0_#fbbf24]
+            ${urgent ? 'animate-pulse border-yellow-400 text-yellow-400' : ''}
+            clip-path-polygon
+        `}
+        style={{ clipPath: 'polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%)' }}
+        >
+            <span className="font-['Bangers'] text-5xl sm:text-7xl leading-none tracking-tighter drop-shadow-md">
+                {val < 10 ? `0${val}` : val}
             </span>
-            
-            {/* Decorative Lines */}
-            <div className="absolute bottom-1 left-1 w-2 h-2 border-l-2 border-b-2 border-current opacity-50"></div>
-            <div className="absolute top-1 right-1 w-2 h-2 border-r-2 border-t-2 border-current opacity-50"></div>
-        </div>
-        <div className="bg-black text-white font-mono text-[10px] md:text-xs font-bold text-center py-1 uppercase tracking-widest border-2 border-black">
-            {label}
+            <span className="bg-black text-yellow-300 font-black font-sans text-[10px] sm:text-xs px-2 py-0.5 uppercase tracking-widest transform -skew-x-12 mt-1">
+                {label}
+            </span>
         </div>
     </div>
 );
 
-// --- MAIN PAGE COMPONENT ---
+// --- MAIN PAGE ---
 const CountdownMission = () => {
   const { name, day, month, character } = useParams();
   const navigate = useNavigate();
   const [showShare, setShowShare] = useState(false);
   const [timeLeft, setTimeLeft] = useState(null);
   const [isBirthday, setIsBirthday] = useState(false);
-  const [bgPhase, setBgPhase] = useState('calm');
   const [giftOpened, setGiftOpened] = useState(false);
   const [isCleaningData, setIsCleaningData] = useState(false);
 
-  // Character Config
+  // Character Data
   const CHARACTER_CONFIG = {
-    gojo: { img: '/avatar/Gojo_satoru.webp', filter: 'grayscale(100%) contrast(110%) brightness(0.8)', name: 'AGENT GOJO' },
-    leon: { img: '/avatar/Leon_scott_keneddy.webp', filter: 'grayscale(100%) contrast(120%) brightness(0.7)', name: 'AGENT LEON' },
-    levi: { img: '/avatar/levi_ackermen.webp', filter: 'grayscale(100%) contrast(120%) brightness(0.8)', name: 'CAPTAIN LEVI' },
-    vanguard: { img: '/comicpanel.webp', filter: 'grayscale(100%) sepia(100%) hue-rotate(90deg)', name: 'AGENT VANGUARD' },
-    chrono: { img: '/comicpanel.webp', filter: 'grayscale(100%)', name: 'AGENT CHRONO' },
-    neon: { img: '/comicpanel2.webp', filter: 'grayscale(100%) contrast(120%)', name: 'AGENT NEON' }
+    gojo: { img: '/avatar/Gojo_satoru.webp', name: 'SATORU GOJO' },
+    leon: { img: '/avatar/Leon_scott_keneddy.webp', name: 'LEON KENNEDY' },
+    levi: { img: '/avatar/levi_ackermen.webp', name: 'LEVI ACKERMAN' },
+    vanguard: { img: '/comicpanel.webp', name: 'VANGUARD' },
+    chrono: { img: '/comicpanel.webp', name: 'CHRONO' },
+    neon: { img: '/comicpanel2.webp', name: 'NEON' }
   };
   
   const activeChar = CHARACTER_CONFIG[character] || CHARACTER_CONFIG['gojo'];
 
   const getPhaseData = (days) => {
-    if (days === 0 && !isBirthday) return { phase: 'critical', dialog: "HOUR ZERO APPROACHING. POSITIONS!" };
-    if (days > 100) return { phase: 'calm', dialog: "Long haul ahead. Conserve stamina." };
-    if (days > 30)  return { phase: 'intense', dialog: "Target in sight. Lock focus." };
-    if (days > 0)   return { phase: 'critical', dialog: "CRITICAL! Time is running out!" };
-    return { phase: 'finished', dialog: "Mission Complete." };
-  };
-
-  const bgPhaseColors = {
-    calm: 'grayscale(100%) brightness(0.4)',
-    intense: 'grayscale(100%) contrast(120%) brightness(0.5)',
-    critical: 'grayscale(100%) contrast(150%) sepia(40%) brightness(0.3)',
-    finished: 'grayscale(0%)'
+    if (days === 0 && !isBirthday) return { dialog: "IT'S SHOWTIME! THE MOMENT IS NOW!" };
+    if (days > 100) return { dialog: "Still a long way to go. Don't let your guard down." };
+    if (days > 30)  return { dialog: "The deadline approaches. Prepare yourself." };
+    if (days > 0)   return { dialog: "Only a few days left! Are you ready to steal the show?" };
+    return { dialog: "Mission Complete. Happy Birthday." };
   };
 
   useEffect(() => {
@@ -303,8 +318,6 @@ const CountdownMission = () => {
         minutes: Math.floor((diff / 1000 / 60) % 60),
         seconds: Math.floor((diff / 1000) % 60),
       });
-
-      setBgPhase(getPhaseData(daysLeft).phase);
     };
     
     const timer = setInterval(calculate, 1000);
@@ -316,174 +329,117 @@ const CountdownMission = () => {
   const isFromLoading = location.state?.fromLoading;
   const phaseData = timeLeft ? getPhaseData(timeLeft.totalDays) : { dialog: "..." };
 
-  // Use the LoadingScreen component we defined earlier
-  if (!timeLeft) return <LoadingScreen text="SYNCING MISSION DATA..." />;
-  if (isCleaningData) return <LoadingScreen text="CLEANING DATA..." />;
-
-  const containerVariants = {
-    initial: isFromLoading ? { opacity: 0 } : { opacity: 0 },
-    animate: { opacity: 1, transition: { duration: 0.8 } },
-    exit: { opacity: 0 }
-  };
-
-  const handleReturnHome = () => {
-    setIsCleaningData(true);
-    setTimeout(() => {
-      navigate('/');
-    }, 2000);
-  };
+  if (!timeLeft) return <LoadingScreen text="INFILTRATING..." />;
+  if (isCleaningData) return <LoadingScreen text="ESCAPING..." />;
 
   return (
-    <div className="flex flex-col min-h-screen bg-neutral-100 font-sans">
-      <motion.button
-        onClick={handleReturnHome}
-        initial={{ x: -100, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        whileHover={{ x: 5, scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className="fixed top-3 left-3 md:top-6 md:left-6 z-50 group origin-top-left"
-      >
-        <div className="relative bg-yellow-400 border-2 md:border-4 border-black px-4 py-1.5 md:px-6 md:py-2 shadow-[2px_2px_0_#000] md:shadow-[6px_6px_0_#000] hover:shadow-[4px_4px_0_#000] md:hover:shadow-[8px_8px_0_#000] transition-all transform -skew-x-12">
-          <div className="hidden md:block absolute top-0 right-0 w-3 h-3 bg-black transform translate-x-1/2 -translate-y-1/2 rotate-45"></div>
-          <div className="hidden md:block absolute bottom-0 left-0 w-2 h-2 bg-black transform -translate-x-1/2 translate-y-1/2"></div>
-          <div className="flex items-center gap-2 md:gap-3 transform skew-x-12">
-            <div className="bg-black text-white rounded-full w-5 h-5 md:w-8 md:h-8 flex items-center justify-center border-2 border-white/20 group-hover:rotate-180 transition-transform duration-500">
-              <span className="font-mono font-bold text-xs md:text-lg mb-0.5">{'<'}</span>
-            </div>
-            <div className="flex flex-col items-start leading-none">
-              <span className="font-['Bangers'] text-lg md:text-2xl tracking-widest text-black group-hover:text-red-600 transition-colors">
-                RETURN TO CREATE AGAIN
-              </span>
-              <span className="font-mono text-[7px] md:text-[9px] font-bold bg-black text-white px-1 mt-0.5 md:mt-1">
-                SYSTEM.NAV
-              </span>
-            </div>
-          </div>
-        </div>
-      </motion.button>
+    <div className="flex flex-col min-h-screen bg-[#f5f5f5] font-sans overflow-x-hidden selection:bg-yellow-300 selection:text-black">
+      
+      {/* --- BACKGROUND GRAPHICS --- */}
+      <div className="fixed inset-0 z-0 opacity-20 pointer-events-none">
+         {/* Halftone Pattern */}
+         <div className="absolute inset-0" style={{backgroundImage: 'radial-gradient(#ddd 1px, transparent 1px)', backgroundSize: '20px 20px'}}></div>
+         {/* Dynamic Yellow Shape */}
+         <div className="absolute top-0 right-0 w-[80vw] h-[120vh] bg-yellow-200 transform -skew-x-12 translate-x-1/4"></div>
+      </div>
+
+      {/* --- RETURN BUTTON (MENU STYLE) --- */}
+      <BackButton to="/" label="RETURN" />
+
       <motion.div 
-        variants={containerVariants}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-        className="flex-grow grid grid-cols-1 lg:grid-cols-12 min-h-screen"
+        className="flex-grow grid grid-cols-1 lg:grid-cols-12 min-h-screen relative z-10"
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}
       >
         
-        {/* --- LEFT PANEL: MISSION BRIEF (Desktop: Col 1-5, Mobile: Order 2) --- */}
-        <div className="lg:col-span-5 order-2 lg:order-1 bg-white border-r-0 lg:border-r-8 border-black flex flex-col relative z-20">
-            {/* Sticky Header Strip */}
-            <div className="bg-black text-white p-4 flex justify-end items-center sticky top-0 z-30 shadow-md">
-                <div className="font-mono text-xs font-bold text-gray-400 tracking-widest">
-                    CASE_FILE_#{day}{month}
-                </div>
+        {/* --- LEFT PANEL: STATS & DIALOGUE (Col 1-5) --- */}
+        <div className="lg:col-span-5 order-2 lg:order-1 flex flex-col justify-center p-6 lg:p-12 relative">
+            {/* Header Date/Weather (Cosmetic) */}
+            <div className="absolute top-0 left-0 w-full bg-white text-black p-2 border-b-4 border-yellow-300 transform -skew-y-1 lg:hidden">
+                <span className="font-mono font-bold ml-4">CASE FILE: {day}/{month}</span>
             </div>
 
-            {/* Content Body */}
-            <div className="p-8 md:p-12 flex flex-col h-full justify-center">
-                
-                {/* Stamp / Title */}
-                <div className="mb-8 border-4 border-black inline-block p-4 transform -rotate-1 self-start shadow-[8px_8px_0_#000] bg-white">
-                    <p className="font-mono text-[10px] font-bold uppercase tracking-widest bg-black text-white px-1 mb-1 inline-block">Target Identity</p>
-                    <h1 className="font-['Bangers'] text-6xl md:text-7xl leading-none text-black uppercase break-all">
-                        {name}
-                    </h1>
+            {/* CHARACTER DIALOGUE BOX */}
+            <div className="mb-12 relative">
+                {/* Character Portrait (Cutout Style) */}
+                <div className="w-32 h-32 lg:w-48 lg:h-48 absolute -top-16 -left-4 lg:-left-10 z-20 drop-shadow-[5px_5px_0_rgba(0,0,0,0.5)] transform rotate-[-5deg]">
+                     <img src={`/chibi/chibi_${character}.webp`} alt={character} className="w-full h-full object-contain filter grayscale contrast-125" />
                 </div>
 
-                {/* Status Report Box */}
-                <div className="bg-gray-50 border-l-8 border-black p-6 mb-10 relative shadow-inner">
-                    <div className="absolute -top-3 left-4 bg-black text-white px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider">
-                        Agent Report // {activeChar.name}
+                {/* Speech Bubble */}
+                <div className="bg-white border-4 border-black p-6 pt-16 lg:pt-8 lg:pl-32 shadow-[10px_10px_0_#fbbf24] transform -rotate-1 relative z-10 clip-path-polygon"
+                     style={{clipPath: 'polygon(0% 0%, 100% 0%, 100% 90%, 95% 100%, 5% 100%, 0% 90%)'}}>
+                    <div className="text-gray-600 font-mono text-xs font-bold mb-1 uppercase tracking-widest border-b border-gray-400 pb-1">
+                        PHANTOM THIEF // {activeChar.name}
                     </div>
-                    <div className="flex flex-col md:flex-row gap-4 mb-4">
-                        <div className="flex-shrink-0">
-                            <img 
-                                src={`/chibi/chibi_${character}.webp`}
-                                alt={character}
-                                className="h-20 w-20 md:h-24 md:w-24 object-contain"
-                            />
-                        </div>
-                        <p className="font-serif italic font-bold text-2xl md:text-3xl text-gray-800 leading-tight flex-1">
-                            "{phaseData.dialog}"
-                        </p>
-                    </div>
-                    <div className="mt-4 flex items-center gap-2">
-                        <div className={`h-3 w-3 rounded-full ${timeLeft.totalDays === 0 ? 'bg-red-600 animate-ping' : 'bg-green-500'}`}></div>
-                        <span className="font-mono text-xs font-bold text-gray-500 uppercase">
-                            {timeLeft.totalDays === 0 ? 'STATUS: CRITICAL' : 'STATUS: MONITORING'}
-                        </span>
-                    </div>
-                </div>
-
-                {/* Action Button */}
-                <div className="mt-auto">
-                    <button 
-                        onClick={() => setShowShare(true)}
-                        className="group w-full relative bg-yellow-400 h-16 border-4 border-black transition-all hover:-translate-y-1 hover:shadow-[8px_8px_0_#000] active:translate-y-0 active:shadow-none"
-                    >
-                        <div className="absolute inset-0 flex items-center justify-center font-['Bangers'] text-2xl tracking-wide gap-2 group-hover:gap-4 transition-all z-10">
-                            <span>RECRUIT AGENTS</span>
-                            <span className="text-xl">➔</span>
-                        </div>
-                        {/* Striped pattern overlay */}
-                        <div className="absolute inset-0 opacity-10 bg-[repeating-linear-gradient(45deg,#000,#000_10px,transparent_10px,transparent_20px)] pointer-events-none"></div>
-                    </button>
-                    <p className="text-center font-mono text-[10px] text-gray-400 mt-3 uppercase">
-                        Secure line encrypted • Do not distribute to civilians
+                    <p className="text-black font-['Bangers'] text-2xl lg:text-4xl tracking-wide leading-tight">
+                        "{phaseData.dialog}"
                     </p>
+                    <div className="absolute -right-2 -bottom-2">
+                        <P5Star className="w-8 h-8 text-yellow-400 animate-pulse" />
+                    </div>
                 </div>
             </div>
+
+            {/* TARGET INFO */}
+            <div className="mb-8">
+                <div className="inline-block bg-black text-white px-4 py-1 transform skew-x-[-10deg] border-2 border-white mb-2">
+                    <span className="font-mono font-black text-sm uppercase transform skew-x-[10deg] block">Current Target</span>
+                </div>
+                <h1 className="font-['Bangers'] text-6xl lg:text-8xl text-black uppercase leading-none drop-shadow-[4px_4px_0_#fbbf24] transform -rotate-2">
+                    {name}
+                </h1>
+            </div>
+
+            {/* ACTION BUTTON */}
+            <button 
+                onClick={() => setShowShare(true)}
+                className="group relative w-full h-20 bg-yellow-300 border-4 border-black overflow-hidden shadow-[8px_8px_0_#000] transform hover:-translate-y-1 hover:shadow-[12px_12px_0_#000] transition-all"
+            >
+                <div className="absolute inset-0 bg-black translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out skew-y-12 origin-bottom-left"></div>
+                <div className="relative z-10 flex items-center justify-center h-full gap-4">
+                    <span className="font-['Bangers'] text-3xl text-black tracking-widest group-hover:text-yellow-300 transition-colors">
+                        SEND CALLING CARD
+                    </span>
+                    <P5Star className="w-6 h-6 text-black group-hover:text-yellow-300 group-hover:rotate-180 transition-all duration-500" />
+                </div>
+            </button>
         </div>
 
-        {/* --- RIGHT PANEL: VISUAL & COUNTDOWN (Desktop: Col 6-12, Mobile: Order 1) --- */}
-        <div className="lg:col-span-7 order-1 lg:order-2 relative bg-neutral-900 overflow-hidden min-h-[50vh] flex flex-col">
+        {/* --- RIGHT PANEL: COUNTDOWN & VISUAL (Col 6-12) --- */}
+        <div className="lg:col-span-7 order-1 lg:order-2 relative flex flex-col items-center justify-center min-h-[50vh] lg:min-h-screen p-8">
             
-            {/* Dynamic Background Image */}
-            <AnimatePresence mode='wait'>
-                <motion.div 
-                    key={bgPhase}
-                    className="absolute inset-0 bg-cover bg-center"
-                    initial={{ opacity: 0 }} 
-                    animate={{ opacity: 1 }} 
-                    exit={{ opacity: 0 }} 
-                    transition={{ duration: 1 }}
-                    style={{ 
-                        backgroundImage: `url('${activeChar.img}')`,
-                        filter: `${bgPhaseColors[bgPhase]} ${character === 'vanguard' ? 'hue-rotate(90deg)' : ''}`
-                    }}
-                />
-            </AnimatePresence>
+            {/* Character Background Splash */}
+            <div className="absolute inset-0 z-0">
+                <div className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-luminosity" 
+                     style={{backgroundImage: `url('${activeChar.img}')`}}>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#f5f5f5] via-transparent to-transparent"></div>
+            </div>
 
-            {/* Overlays for Texture/Atmosphere */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(0,0,0,0.8)_1px,transparent_1px)] bg-[length:4px_4px] opacity-40 pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90" />
-            
-            {/* Content Layer */}
-            <div className="relative z-10 flex-grow flex flex-col justify-center items-center p-6 md:p-12 w-full">
+            {/* Content Container */}
+            <div className="relative z-10 w-full max-w-2xl">
                 
-                {/* Main Interactive Content (Gift/Audio) */}
-                <div className="w-full flex-grow flex items-center justify-center">
-                    {isBirthday && giftOpened ? (
-                        <VoiceNotePlayer characterName={character} name={name} />
-                    ) : isBirthday && !giftOpened ? (
-                        <GiftBox character={character} name={name} onOpen={() => setGiftOpened(true)} isLocked={false} />
+                {/* Visualizer / Gift Area */}
+                <div className="mb-12 flex justify-center">
+                    {isBirthday ? (
+                         giftOpened ? (
+                             <PhantomAudio characterName={character} name={name} />
+                         ) : (
+                             <PhantomGiftBox character={character} name={name} onOpen={() => setGiftOpened(true)} isLocked={false} />
+                         )
                     ) : (
-                        <div className="w-full flex flex-col items-center">
-                            <div className="scale-75 md:scale-100 mb-8 md:mb-0">
-                                <GiftBox character={character} name={name} onOpen={() => {}} isLocked={true} />
-                            </div>
-                        </div>
+                        <PhantomGiftBox character={character} name={name} isLocked={true} />
                     )}
                 </div>
 
-                {/* Countdown Timer (Only visible before birthday) */}
+                {/* Asymmetrical Countdown */}
                 {!isBirthday && (
-                    <div className="w-full max-w-3xl mx-auto mt-4 md:mt-8">
-                        <div className="grid grid-cols-4 gap-2 md:gap-4">
-                            <MangaTimeBox val={timeLeft.totalDays} label="DAYS" urgent={timeLeft.totalDays < 7} />
-                            <MangaTimeBox val={timeLeft.hours} label="HOURS" />
-                            <MangaTimeBox val={timeLeft.minutes} label="MINS" />
-                            <MangaTimeBox val={timeLeft.seconds} label="SECS" urgent={true} />
-                        </div>
+                    <div className="flex flex-wrap justify-center gap-4 lg:gap-8 transform -rotate-3">
+                        <PersonaClock val={timeLeft.totalDays} label="DAYS" />
+                        <PersonaClock val={timeLeft.hours} label="HRS" />
+                        <div className="hidden sm:block w-px h-24 bg-yellow-300 transform rotate-12 mx-2"></div>
+                        <PersonaClock val={timeLeft.minutes} label="MIN" />
+                        <PersonaClock val={timeLeft.seconds} label="SEC" urgent={true} />
                     </div>
                 )}
             </div>
@@ -492,11 +448,12 @@ const CountdownMission = () => {
       </motion.div>
 
       <AnimatePresence>
-        {showShare && <ShareModal url={window.location.href} onClose={() => setShowShare(false)} />}
+        {showShare && <CallingCardModal url={window.location.href} onClose={() => setShowShare(false)} />}
       </AnimatePresence>
 
-      <div className="relative z-50">
-        <Footer />
+      <div className="relative z-50 bg-white text-black border-t-4 border-yellow-300">
+         <JaggedEdge className="text-yellow-300 -mt-3 absolute top-0 w-full" />
+         <Footer />
       </div>
     </div>
   );
