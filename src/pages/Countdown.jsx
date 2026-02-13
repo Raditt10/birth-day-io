@@ -394,9 +394,18 @@ const CountdownMission = () => {
                     <div className="absolute -top-3 left-4 bg-black text-white px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider">
                         Agent Report // {activeChar.name}
                     </div>
-                    <p className="font-serif italic font-bold text-2xl md:text-3xl text-gray-800 leading-tight">
-                        "{phaseData.dialog}"
-                    </p>
+                    <div className="flex flex-col md:flex-row gap-4 mb-4">
+                        <div className="flex-shrink-0 bg-transparent">
+                            <img 
+                                src={`/chibi/chibi_${character}.webp`}
+                                alt={character}
+                                className="h-20 w-20 md:h-24 md:w-24 object-contain bg-transparent"
+                            />
+                        </div>
+                        <p className="font-serif italic font-bold text-2xl md:text-3xl text-gray-800 leading-tight flex-1">
+                            "{phaseData.dialog}"
+                        </p>
+                    </div>
                     <div className="mt-4 flex items-center gap-2">
                         <div className={`h-3 w-3 rounded-full ${timeLeft.totalDays === 0 ? 'bg-red-600 animate-ping' : 'bg-green-500'}`}></div>
                         <span className="font-mono text-xs font-bold text-gray-500 uppercase">
