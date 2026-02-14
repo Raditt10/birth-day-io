@@ -2,8 +2,17 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-black text-white relative overflow-hidden border-t-4 border-yellow-400">
+    // HAPUS 'border-t-4 border-yellow-400' dari class footer di bawah ini
+    <footer className="w-full bg-black text-white relative overflow-hidden">
       
+      {/* --- GLOW & BLUR SEPARATOR (Efek Nyatu) --- */}
+      {/* 1. Garis Inti (Core Line) - Memudar di kiri kanan */}
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-yellow-400 to-transparent z-50 opacity-80"></div>
+      
+      {/* 2. Bias Cahaya (Glow Blur) - Memberikan efek menyatu ke konten */}
+      <div className="absolute top-0 left-0 right-0 h-6 bg-gradient-to-b from-yellow-400/30 to-transparent blur-xl z-40 pointer-events-none"></div>
+
+
       {/* --- BACKGROUND PATTERNS --- */}
       {/* 1. Halftone Dots */}
       <div className="absolute inset-0 opacity-10 pointer-events-none" 

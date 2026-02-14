@@ -432,11 +432,21 @@ const Home = () => {
       </div>
       </MangaLayout>
       
-      <div className="bg-black border-t-2 sm:border-t-4 border-yellow-400 relative z-30">
-         <Footer />
+      {/* --- FOOTER SECTION --- */}
+      {/* Hapus border-t solid, ganti dengan efek Glow */}
+      <div className="bg-black relative z-30 pt-1">
+        
+        {/* EFECT GLOW/BLUR SEPARATOR */}
+        {/* Ini membuat efek cahaya kuning pudar di perbatasan footer */}
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-yellow-400 to-transparent opacity-80 shadow-[0_0_20px_rgba(250,204,21,0.8)]"></div>
+        <div className="absolute -top-4 left-0 right-0 h-8 bg-yellow-400/20 blur-xl pointer-events-none"></div>
+
+        <Footer />
       </div>
+
     </motion.div>
   );
 };
 
 export default Home;
+      
