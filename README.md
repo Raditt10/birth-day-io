@@ -18,111 +18,102 @@
     </table>
 </p>
 
-**Hoshi-Day.IO** adalah aplikasi web interaktif yang dirancang untuk para penggemar anime dan pop-culture. Aplikasi ini menyediakan hitung mundur (countdown) *real-time* menuju ulang tahun karakter favorit Anda, dilengkapi dengan fitur pencarian dan berbagi via QR Code.
+
+**Hoshi-Day.IO** adalah aplikasi web interaktif bertema "Phantom Thieves" untuk merayakan ulang tahun karakter anime & game favorit. Fitur utama: hitung mundur real-time, database karakter, QR Code share, dan UI stylish ala Persona 5.
+
 
 ## 📌 Deskripsi Project
-Aplikasi ini berfungsi sebagai "kalender hidup" untuk merayakan hari spesial karakter fiksi.
-* **Character Roster:** Menampilkan daftar karakter dari berbagai seri (seperti *Attack on Titan*, *Jujutsu Kaisen*, *Resident Evil*).
-* **Precision Countdown:** Menghitung sisa hari, jam, menit, dan detik menuju tanggal ulang tahun karakter.
-* **Shareable Moments:** Memungkinkan pengguna membagikan hitung mundur karakter tertentu kepada teman melalui QR Code.
+Hoshi-Day.IO adalah "kalender hidup" untuk para fans pop-culture:
+- **Mission Briefing:** Intro animasi dengan video & efek chroma key.
+- **Target Details Form:** Input nama target, tanggal lahir, dan pilih karakter pengantar.
+- **Character Roster:** Database karakter dari anime/game populer (Attack on Titan, Jujutsu Kaisen, Resident Evil, Love and Deepspace, dll).
+- **Countdown Real-Time:** Hitung mundur presisi (hari, jam, menit, detik) dengan status fase (calm, intense, critical, imminent).
+- **QR Code Share:** Bagikan link countdown via QR Code unik.
+- **Custom Toast & Loading:** Notifikasi error/sukses dan loading screen dengan efek video.
+
 
 ## 🛠️ Tech Stack
-Dibangun dengan teknologi modern untuk performa cepat dan tampilan responsif:
+- **React.js** (SPA, komponen modular)
+- **Tailwind CSS** (utility-first styling)
+- **Framer Motion** (animasi & transisi)
+- **React Router DOM** (navigasi halaman)
+- **qrcode.react** (QR Code generator)
+- **Custom Hooks** (`useCountdown`)
 
-* **Frontend Framework:** React.js
-* **Styling:** Tailwind CSS (Utility-first CSS framework)
-* **Routing:** React Router DOM
-* **Utilities:**
-    * `qrcode.react` (Generator QR Code)
-    * Custom Hooks (`useCountdown`) untuk logika waktu
 
 ## 🚀 Fitur Utama
 
+### 🕵️ Mission Briefing & Form
+- Intro animasi video dengan efek green screen.
+- Form input: nama target, tanggal lahir, pilih karakter pengantar.
+
 ### 📅 Character Roster & Search
-* **Jelajahi Karakter**: Tampilan grid yang rapi menampilkan avatar dan nama karakter.
-* **Pencarian Cepat**: Fitur search bar untuk menemukan karakter favorit secara instan.
+- Grid avatar karakter, search bar real-time.
+- Pilihan karakter dari berbagai universe (Gojo, Levi, Eren, Leon, Caleb, dll).
 
-### ⏱️ Interactive Countdown
-* **Timer Real-time**: Hitung mundur presisi yang diperbarui setiap detik.
-* **Visual Menarik**: Tampilan halaman countdown yang disesuaikan dengan tema karakter.
+### ⏱️ Countdown Real-Time
+- Hitung mundur presisi (hari, jam, menit, detik).
+- Fase status: Calm, Intense, Critical, Imminent.
+- Visual dinamis sesuai karakter.
 
-### 📱 Sharing & Connectivity
-* **QR Code Generator**: Buat QR Code unik untuk setiap karakter yang bisa di-scan oleh orang lain untuk melihat countdown yang sama.
+### 📱 QR Code & Share
+- Generate QR Code unik untuk setiap countdown.
+- Modal share dengan copy link otomatis.
 
-## 📁 Struktur Folder
-Gambaran struktur direktori utama project ini:
+### 🎨 UI/UX
+- Tema Persona 5: font Bangers, efek comic, animasi, loading screen video, toast notifikasi custom.
+
+
+## 📁 Struktur Folder (Ringkas)
 
 ```text
 hoshi-day.io/
 ├── public/
-│   ├── avatar/            # Aset gambar karakter (Eren, Gojo, Leon, dll)
-│   ├── comicpanel.webp    # Aset grafis UI
-│   └── index.html         # HTML entry point
+│   ├── avatar/      # Gambar karakter utama
+│   ├── chibi/       # Gambar chibi karakter
+│   ├── voices/      # (Kosong, untuk future voice asset)
+│   └── screenshot/  # Screenshot aplikasi
 ├── src/
 │   ├── components/
-│   │   ├── features/      # Komponen fitur spesifik (QRCodeModal)
-│   │   ├── layout/        # Layout utama aplikasi
-│   │   └── ui/            # Komponen UI reusable (Button, SearchBar, Loader)
-│   ├── data/
-│   │   └── characters.js  # Database lokal data karakter
-│   ├── hooks/             # Custom hooks (useCountdown)
-│   ├── pages/             # Halaman aplikasi (Home, Roster, Countdown)
-│   ├── services/          # Logika bisnis (CountdownService)
-│   ├── utils/             # Fungsi bantuan (dateHelpers)
-│   ├── App.js             # Konfigurasi routing utama
-│   └── index.css          # Import Tailwind CSS
-└── package.json           # Dependensi project
-
+│   │   ├── features/  # QRCodeModal
+│   │   ├── layout/    # Layout utama
+│   │   └── ui/        # Komponen UI: Button, SearchBar, Loader, Toast, DatePicker, Footer
+│   ├── data/          # characters.js (database karakter)
+│   ├── hooks/         # useCountdown
+│   ├── pages/         # Home, CharacterRoster, Countdown
+│   ├── services/      # CountdownService (localStorage)
+│   ├── utils/         # dateHelpers, dateUtils
+│   └── App.js, index.js/css
+└── package.json
 ```
+
 
 ## ⚙️ Instalasi & Setup
 
-Ikuti langkah berikut untuk menjalankan project di komputer lokal:
+1. **Clone repository & install dependensi**
+    ```bash
+    git clone https://github.com/username/hoshi-day.io.git
+    cd hoshi-day.io
+    pnpm install # atau npm install
+    ```
+2. **Jalankan mode development**
+    ```bash
+    pnpm start # atau npm start
+    ```
+3. Buka di browser: `http://localhost:3000`
 
-### Prasyarat
-
-* Node.js & NPM/PNPM terinstall.
-
-### Langkah Instalasi
-
-1. **Clone Repository**
-```bash
-git clone [https://github.com/username/hoshi-day.io.git](https://github.com/username/hoshi-day.io.git)
-cd hoshi-day.io
-
-```
-
-
-2. **Instal Dependensi**
-```bash
-npm install
-# atau
-pnpm install
-
-```
-
-
-3. **Jalankan Mode Development**
-```bash
-npm start
-
-```
-
-
-Aplikasi akan berjalan di `http://localhost:3000`.
 
 ## 🤝 Kontribusi
 
-Tertarik menambahkan karakter baru atau fitur notifikasi?
+Ingin menambah karakter, fitur, atau memperbaiki bug?
+1. Fork repo ini
+2. Tambahkan karakter di `src/data/characters.js` & gambar di `public/avatar/`
+3. Pull Request
 
-1. Fork repository ini.
-2. Tambahkan data karakter baru di `src/data/characters.js` dan upload gambarnya di `public/avatar/`.
-3. Buat Pull Request.
 
 ## 📄 Lisensi
-
-Project ini dilisensikan di bawah **MIT License**.
+MIT License
 
 ---
 
-*Dibuat oleh [Raditt10]*
+*Dibuat oleh [Raditt10] & Kanjirouu, 2026*
