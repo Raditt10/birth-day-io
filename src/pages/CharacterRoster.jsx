@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom'; // Tambah useLocation
 import { CHARACTERS } from '../data/characters';
 import Footer from '../components/ui/Footer';
 import BackButton from '../components/ui/BackButton';
@@ -9,10 +9,13 @@ import LoadingScreen from '../components/ui/LoadingScreen';
 
 const CharacterRoster = () => {
   const navigate = useNavigate();
+  const location = useLocation(); // Hook untuk mengambil data dari Home
   const [activeCard, setActiveCard] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   
-  // State untuk loading dan teks loading
+  // Ambil data form yang dikirim dari Home (jika ada) agar tidak hilang
+  const existingFormData = location.state?.formData || null;
+
   const [isLoading, setIsLoading] = useState(false);
   const [loadingText, setLoadingText] = useState('INITIALIZING...');
 
@@ -21,26 +24,35 @@ const CharacterRoster = () => {
   };
 
   const handleSelectCharacter = (characterId) => {
-    setLoadingText("INITIALIZING..."); // Set teks untuk select
+    setLoadingText("INITIALIZING...");
     setIsLoading(true);
     setTimeout(() => {
-      navigate('/', { state: { selectedCharacter: characterId } });
+      // Navigasi balik ke Home dengan membawa Character ID BARU + Data Form LAMA
+      navigate('/', { 
+        state: { 
+          selectedCharacter: characterId,
+          savedFormData: existingFormData // Kembalikan data nama/tanggal ke Home
+        } 
+      });
       setIsLoading(false);
-    }, 3000);
+    }, 2000);
   };
 
-  // --- FUNGSI BARU UNTUK BACK BUTTON ---
+  // --- LOGIC TOMBOL BACK ---
   const handleBack = (e) => {
-    // Mencegah navigasi default jika BackButton menggunakan Link
-    if (e) e.preventDefault(); 
+    if (e) e.preventDefault(); // Mencegah navigasi instan
     
-    setLoadingText("CLEANING DATA"); // Set teks sesuai request
+    setLoadingText("CLEANING DATA"); // Sesuai request
     setIsLoading(true);
 
-    // Tahan selama 2 detik, baru pindah
+    // Tahan 1.5 detik untuk animasi loading, lalu navigasi
     setTimeout(() => {
-      navigate('/'); // Atau navigate(-1) untuk kembali ke history sebelumnya
-    }, 2000);
+      navigate('/', { 
+        state: { 
+          savedFormData: existingFormData // PENTING: Kembalikan data form agar tidak reset
+        } 
+      }); 
+    }, 1500);
   };
 
   const filteredCharacters = CHARACTERS.filter(char =>
@@ -50,20 +62,20 @@ const CharacterRoster = () => {
   );
 
   return (
-    <div className="min-h-screen bg-zinc-900 text-white overflow-x-hidden">
+    <div className="min-h-screen bg-zinc-900 text-white overflow-x-hidden selection:bg-yellow-400 selection:text-black">
       
-      {/* LOADING SCREEN: Gunakan state loadingText */}
+      {/* LOADING SCREEN */}
       <AnimatePresence>
         {isLoading && <LoadingScreen text={loadingText} />}
       </AnimatePresence>
       
       {/* GLOBAL BACK BUTTON */}
       <div className="relative z-50">
-        {/* PENTING: Oper fungsi handleBack ke prop onClick */}
+        {/* Pass handleBack ke onClick agar loading berjalan dulu */}
         <BackButton onClick={handleBack} />
       </div>
 
-      {/* ... SISA KODE SAMA SEPERTI SEBELUMNYA ... */}
+      {/* MAIN CONTENT */}
       <main className="pt-20 pb-20 px-4 md:px-8 max-w-7xl mx-auto">
         
         <div className="mb-8 text-center">

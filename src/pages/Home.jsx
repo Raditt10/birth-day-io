@@ -58,11 +58,15 @@ const Home = () => {
     }, 2000);
   };
 
-  const handleDisplayAll = () => {
+ // Di dalam Home.jsx
+const handleDisplayAll = () => {
     setLoadingText('ACCESSING DATABASE...');
     setIsLoading(true);
-    setTimeout(() => { navigate('/characters'); }, 1500);
-  }
+    setTimeout(() => {
+        // PERUBAHAN DI SINI: Kirim formData saat ini ke CharacterRoster
+        navigate('/characters', { state: { formData: formData } }); 
+    }, 1500);
+}
 
   // Animasi Halaman
   const pageVariants = {
