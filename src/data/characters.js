@@ -19,7 +19,7 @@ export const CHARACTERS = [
       id: 'levi', 
       name: 'LEVI ACKERMEN', 
       desc: 'Humanity\'s Strongest', 
-      img: '/avatar/Levi_ackermen.webp',
+      img: '/avatar/levi_ackermen.webp',
       stats: { power: 95, speed: 99, technique: 98 },
       universe: 'ATTACK ON TITAN' 
     },
@@ -35,7 +35,7 @@ export const CHARACTERS = [
       id: 'caleb', 
       name: 'CALEB', 
       desc: 'Mystic Protector', 
-      img: '/avatar/Caleb.webp',
+      img: '/avatar/caleb.webp',
       stats: { power: 92, speed: 88, technique: 90 },
       universe: 'LOVE AND DEEPSPACE' 
     }
