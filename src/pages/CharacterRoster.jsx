@@ -23,15 +23,21 @@ const CharacterRoster = () => {
     setActiveCard(activeCard === id ? null : id);
   };
 
+ // Di CharacterRoster.jsx -> handleSelectCharacter
+
   const handleSelectCharacter = (characterId) => {
     setLoadingText("INITIALIZING...");
     setIsLoading(true);
+    
+    // Pastikan existingFormData diambil di awal komponen:
+    // const location = useLocation();
+    // const existingFormData = location.state?.formData; // <-- Ini kuncinya
+
     setTimeout(() => {
-      // Navigasi balik ke Home dengan membawa Character ID BARU + Data Form LAMA
       navigate('/', { 
         state: { 
           selectedCharacter: characterId,
-          savedFormData: existingFormData // Kembalikan data nama/tanggal ke Home
+          savedFormData: existingFormData // <-- Pastikan ini terkirim
         } 
       });
       setIsLoading(false);
