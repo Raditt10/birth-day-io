@@ -1,9 +1,20 @@
+
 # Hoshi-Day.IO
 
 ![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat&logo=vite&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
+
+## 🖼️ Preview
+
+<p align="center">
+    <img src="public/screenshot/Screenshot%202026-02-15%20023604.png" alt="Hoshi-Day.IO Screenshot 1" width="600" />
+    <br/>
+    <img src="public/screenshot/Screenshot%202026-02-15%20023613.png" alt="Hoshi-Day.IO Screenshot 2" width="600" />
+    <br/>
+    <img src="public/screenshot/Screenshot%202026-02-15%20023636.png" alt="Hoshi-Day.IO Screenshot 3" width="600" />
+</p>
 
 **Hoshi-Day.IO** adalah aplikasi web interaktif yang dirancang untuk para penggemar anime dan pop-culture. Aplikasi ini menyediakan hitung mundur (countdown) *real-time* menuju ulang tahun karakter favorit Anda, dilengkapi dengan fitur pencarian dan berbagi via QR Code.
 
