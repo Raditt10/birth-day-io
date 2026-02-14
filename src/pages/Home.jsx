@@ -285,9 +285,9 @@ const Home = () => {
       
       <div className="w-full max-w-xl mx-auto relative px-5 py-8 lg:py-0 min-h-[500px] flex flex-col justify-center">
         {/* Background Decor */}
-        <div className="absolute -top-6 -right-2 -z-10 opacity-10 select-none pointer-events-none">
-           <span className="font-['Bangers'] text-[120px] leading-none text-white">02</span>
-        </div>
+          <div className="absolute -top-6 -right-2 -z-10 opacity-10 select-none pointer-events-none">
+            <span className="font-['Bangers'] text-[120px] leading-none text-white">{showIntro ? '01' : '02'}</span>
+          </div>
 
         {/* --- KONTEN BERUBAH: BRIEFING ATAU FORM --- */}
         <AnimatePresence mode="wait">
